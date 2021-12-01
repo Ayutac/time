@@ -1,4 +1,4 @@
-# Fabric Example Mod
+# Time Mod
 
 A time mod for minecraft/fabric.
 
