@@ -1,0 +1,8 @@
+{
+  "parent": "block/cube_bottom_top",
+  "textures": {
+    "bottom": "time:block/time_collector_bottom",
+    "top": "time:block/time_collector_top",
+    "side": "time:block/time_collector_side"
+  }
+}

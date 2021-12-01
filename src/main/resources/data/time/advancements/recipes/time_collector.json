@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "time:time_collector"
+    ]
+  },
+  "criteria": {
+    "has_timey_wimey": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "time:timey_wimey"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "time:time_collector"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_timey_wimey",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "id": "time",
+  "version": "${version}",
+
+  "name": "Time",
+  "description": "A mod to replace farms of any kind, mostly.",
+  "authors": [
+    "Ayutac"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "MIT",
+  "icon": "assets/time/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "cardinal-components": [
+      "org.abos.fabricmc.time.components.TimeComponents"
+    ],
+    "main": [
+      "org.abos.fabricmc.time.Time"
+    ],
+    "client": [
+      "org.abos.fabricmc.time.client.TimeClient"
+    ]
+  },
+
+  "custom": {
+    "cardinal-components": [
+      "time:passed_time",
+      "time:night_check"
+    ]
+  },
+
+  "mixins": [
+    "time.mixins.json"
+  ],
+
+  "depends": {
+    "cardinal-components-world": ">=3.1.1",
+    "cardinal-components-block": ">=3.1.1",
+    "cardinal-components-base": ">=3.1.1",
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

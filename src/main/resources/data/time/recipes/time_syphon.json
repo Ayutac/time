@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ASA",
+    "T T",
+    "ASA"
+  ],
+  "key": {
+    "A": {
+      "item": "time:amethyme_shard"
+    },
+    "S": {
+      "item": "minecraft:shulker_shell"
+    },
+    "T": {
+      "item": "time:timey_wimey"
+    }
+  },
+  "result": {
+    "item": "time:time_syphon"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "gamerule.tu_increase": "Time Unit (TU) increase per day",
+  "gamerule.dragon_egg_syphon_ticks": "Ticks/cTU for syphoning Dragon Egg",
+  "gamerule.ticks_per_extracted_tu": "Ticks per extracted TU",
+
+  "itemGroup.time.general": "Time mod",
+
+  "item.time.timey_wimey": "Timey Wimey",
+  "item.time.amethyme_shard": "Amethyme Shard",
+  "item.time.time_sword": "Time Sword",
+  "item.time.timey_wand": "Timey Wand",
+  "item.time.time_wand": "Time Wand",
+  "item.time.time_staff": "Time Staff",
+
+  "block.time.time_collector": "Time Collector",
+  "block.time.time_syphon": "Time Syphon",
+  "block.time.time_extractor": "Time Extractor",
+  "container.time_extractor": "Time Extractor"
+}

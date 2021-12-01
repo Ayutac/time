@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TGT",
+    "ATA",
+    "NAN"
+  ],
+  "key": {
+    "A": {
+      "item": "time:amethyme_shard"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "T": {
+      "item": "time:timey_wimey"
+    }
+  },
+  "result": {
+    "item": "time:time_extractor"
+  }
+}

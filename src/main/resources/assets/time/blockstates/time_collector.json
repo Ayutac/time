@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "time:block/time_collector" }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "base": {
+    "item": "time:time_wand"
+  },
+  "addition": {
+    "item": "minecraft:end_rod"
+  },
+  "result": {
+    "item": "time:time_staff"
+  }
+}

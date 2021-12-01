@@ -1,0 +1,9 @@
+{
+  "type": "time:time_extractor",
+  "ingredient": {
+    "item": "minecraft:dragon_head"
+  },
+  "outputItem": "minecraft:ender_eye",
+  "outputItemAmount": 2,
+  "extractedTU": 2
+}

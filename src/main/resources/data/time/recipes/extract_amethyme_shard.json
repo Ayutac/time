@@ -1,0 +1,9 @@
+{
+  "type": "time:time_extractor",
+  "ingredient": {
+    "item": "time:amethyme_shard"
+  },
+  "outputItem": "minecraft:amethyst_shard",
+  "outputItemAmount": 1,
+  "extractedTU": 1
+}

@@ -1,0 +1,5 @@
+- item.time.amethyme_shard: amythyst, but the thyst becomes thyme, because that sounds like time, haha...
+  Would appreciate if you tried to get some similar pun in your language
+- item.time.timey_wimey: Dr.Who reference, the one with the angels and the video tape
+  Would appreciate if you tried to get the corresponding thing in your language
+- item.time.timey_wand: timey as in timey_wimey, but also making it sound a bit cute, like it being the little wand

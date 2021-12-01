@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "T",
+    "S"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "T": {
+      "item": "time:amethyme_shard"
+    }
+  },
+  "result": {
+    "item": "time:timey_wand"
+  }
+}
