@@ -1,0 +1,9 @@
+{
+  "type": "time:time_extractor",
+  "input": {
+    "item": "minecraft:ancient_debris"
+  },
+  "outputItem": "minecraft:sand",
+  "outputItemAmount": 1,
+  "extractedTU": 5
+}

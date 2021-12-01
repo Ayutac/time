@@ -118,7 +118,7 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
                         int maxCount = Math.min(extractor.getMaxCountPerStack(), outputStack.getMaxCount());
                         if (outputStack.getCount() + resultStack.getCount() > maxCount) {
                             Time.LOGGER.warn("Output slot is too full with {}! {}",
-                                    outputStack.getTranslationKey(), TimeExtractorRecipe.ID, ONLY_OUTPUT_ITEM_LOST_PART);
+                                    outputStack.getTranslationKey(), ONLY_OUTPUT_ITEM_LOST_PART);
                             outputStack.setCount(maxCount);
                         }
                         else
@@ -132,11 +132,12 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
             // start extracting maybe
             if (!extractor.isExtracting() && !extractor.getExtractionMaterial().isEmpty()) {
                 Recipe<?> r = getRecipe(world, extractor.getRecipeType(), extractor);
-                if (r != null && r instanceof TimeExtractorRecipe recipe) {
+                if (r instanceof TimeExtractorRecipe recipe) {
                     ItemStack outputStack = extractor.getExtractedMaterial();
                     // check if the output has space and if so, start extracting
-                    if (recipe != null && outputStack.isItemEqualIgnoreDamage(recipe.getOutput()) &&
-                            outputStack.getCount() + recipe.getOutput().getCount() <= Math.min(extractor.getMaxCountPerStack(), outputStack.getMaxCount())) {
+                    if (outputStack.isEmpty() || (outputStack.isItemEqualIgnoreDamage(recipe.getOutput()) &&
+                            outputStack.getCount() + recipe.getOutput().getCount()
+                                    <= Math.min(extractor.getMaxCountPerStack(), outputStack.getMaxCount()))) {
                         if (extractor.getExtractionMaterial().isEmpty()) { // shouldn't happen
                             Time.LOGGER.warn("Despite finding the recipe {} the input slot is empty?! Extraction not started.", recipe.getId());
                         }
@@ -395,7 +396,7 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
         nbt.putInt(REMAINING_EXTRACTION_TU_KEY, remainingExtractionTU.getValue());
         // write used recipes
         NbtCompound nbtCompound = new NbtCompound();
-        this.recipesUsed.forEach((identifier, integer) -> nbtCompound.putInt(identifier.toString(), (int)integer));
+        this.recipesUsed.forEach((identifier, integer) -> nbtCompound.putInt(identifier.toString(), integer));
         nbt.put(RECIPES_USED_KEY, nbtCompound);
         return super.writeNbt(nbt);
     }
