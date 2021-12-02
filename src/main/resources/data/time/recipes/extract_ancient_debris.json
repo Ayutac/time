@@ -3,7 +3,7 @@
   "input": {
     "item": "minecraft:ancient_debris"
   },
-  "outputItem": "minecraft:sand",
+  "outputItem": "minecraft:netherrack",
   "outputItemAmount": 1,
   "extractedTU": 5
 }
