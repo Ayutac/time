@@ -3,6 +3,7 @@ package org.abos.fabricmc.time.blocks;
 import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -11,6 +12,8 @@ import net.minecraft.inventory.SidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.*;
+import net.minecraft.recipe.book.RecipeBookCategory;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
@@ -44,9 +47,11 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
     public static final String CURRENT_EXTRACTION_FORMULA_KEY = "currentExtractionFormula";
     public static final String CURRENT_EXTRACTION_INPUT_KEY = "currentExtractionFormula";
     public static final String CURRENT_EXTRACTION_OUTPUT_KEY = "currentExtractionFormula";
+    public static final String POTENTIAL_TU_KEY = "potentialTU";
     public static final String RECIPES_USED_KEY = "recipesUsed";
 
     public static final int INVENTORY_SIZE = 2;
+    public static final int PROPERTY_DELEGATE_SIZE = 3;
 
     public static final String ONLY_OUTPUT_ITEM_LOST = "This shouldn't happen! Extraction result is lost, but the TUs have been extracted successfully.";
 
@@ -56,6 +61,12 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
     private static final int[] TOP_SLOTS = new int[]{0};
     private static final int[] SIDE_SLOTS = new int[]{0};
     private static final int[] BOTTOM_SLOTS = new int[]{1};
+
+    private static int ticksNeeded;
+    /**
+     * Ticks needed per TU extracted. Is read out from game rules every tick.
+     */
+    public static int getTicksNeeded() {return ticksNeeded;}
 
     //----------------------------------------------------------
     // Fields (need to be read/written via nbt)
@@ -67,12 +78,60 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
 
     protected Counter remainingExtractionTU = new CounterImpl();
 
+    protected int potentialTU;
+
     protected DefaultedList<ItemStack> currentExtraction = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
     /**
      * Counts how often individual recipes have been used.
      */
     private final Object2IntOpenHashMap<Identifier> recipesUsed = new Object2IntOpenHashMap<>();
+
+    //----------------------------------------------------------
+    // the property delegate field needed for the animation
+    //----------------------------------------------------------
+
+    private final PropertyDelegate propertyDelegate = new PropertyDelegate(){
+
+        @Override
+        public int get(int index) {
+            switch (index) {
+                case 0: {
+                    return TimeExtractorBlockEntity.this.tickCounter.getValue();
+                }
+                case 1: {
+                    return TimeExtractorBlockEntity.this.remainingExtractionTU.getValue();
+                }
+                case 2: {
+                    return TimeExtractorBlockEntity.this.potentialTU;
+                }
+            }
+            return 0;
+        }
+
+        @Override
+        public void set(int index, int value) {
+            switch (index) {
+                case 0: {
+                    TimeExtractorBlockEntity.this.tickCounter.setValue(value);
+                    break;
+                }
+                case 1: {
+                    TimeExtractorBlockEntity.this.remainingExtractionTU.setValue(value);
+                    break;
+                }
+                case 2: {
+                    TimeExtractorBlockEntity.this.potentialTU = value;
+                    break;
+                }
+            }
+        }
+
+        @Override
+        public int size() {
+            return PROPERTY_DELEGATE_SIZE;
+        }
+    };
 
     //----------------------------------------------------------
     // Constructor
@@ -92,7 +151,7 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
                 // do one tick of extracting
                 extractor.getTickCounter().increment();
                 // extract 1 TU maybe
-                int ticksNeeded = world.getGameRules().getInt(Time.CONFIG.getTicksPerExtractedTURule());
+                ticksNeeded = world.getGameRules().getInt(Time.CONFIG.getTicksPerExtractedTURule());
                 if (extractor.getTickCounter().getValue() >= ticksNeeded) {
                     ComponentProvider provider = ComponentProvider.fromWorld(world);
                     CounterComponent passedTime = TimeComponents.PASSED_TIME.get(provider);
@@ -189,6 +248,7 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
         concreteInput.decrement(1);
         currentExtraction.set(1, recipeOutput);
         remainingExtractionTU.setValue(expectedTU); // throws IAE
+        potentialTU = expectedTU;
     }
 
     protected ItemStack getCurrentExtractionMaterial() {
@@ -321,7 +381,7 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
 
     @Override
     protected ScreenHandler createScreenHandler(int syncId, PlayerInventory playerInventory) {
-        return new TimeExtractorScreenHandler(syncId, playerInventory, this);
+        return new TimeExtractorScreenHandler(syncId, playerInventory, this, this.propertyDelegate);
     }
 
     @Override
@@ -363,7 +423,7 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
         if (Counter.isCounterValue(tickCounter))
             this.tickCounter.setValue(tickCounter);
         else {
-            Time.LOGGER.warn("Illegal value {} for counter detected, will default to 0 instead.", tickCounter);
+            Time.LOGGER.warn("Illegal value {} for tick counter detected, will default to 0 instead.", tickCounter);
             this.tickCounter.setValue(0);
         }
         // read TU that remain to be extracted
@@ -371,8 +431,17 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
         if (Counter.isCounterValue(remainingExtractionTU))
             this.remainingExtractionTU.setValue(remainingExtractionTU);
         else {
-            Time.LOGGER.warn("Illegal value {} for counter detected, will default to 0 instead.", remainingExtractionTU);
+            Time.LOGGER.warn("Illegal value {} for remaining TU counter detected, will default to 0 instead.", remainingExtractionTU);
             this.remainingExtractionTU.setValue(0);
+        }
+        // read potential TU
+        int potentialTU = nbt.getInt(POTENTIAL_TU_KEY);
+        if (potentialTU >= this.remainingExtractionTU.getValue())
+            this.potentialTU = potentialTU;
+        else
+        {
+            Time.LOGGER.warn("Illegal value {} for potential detected, will default to {} instead.", potentialTU, this.remainingExtractionTU.getValue());
+            this.potentialTU = this.remainingExtractionTU.getValue();
         }
         // read used recipes
         NbtCompound nbtCompound = nbt.getCompound(RECIPES_USED_KEY);
@@ -394,6 +463,8 @@ public class TimeExtractorBlockEntity extends LockableContainerBlockEntity
         nbt.putInt(TICK_COUNTER_KEY, tickCounter.getValue());
         // write TU that remain to be extracted
         nbt.putInt(REMAINING_EXTRACTION_TU_KEY, remainingExtractionTU.getValue());
+        // write potential TU
+        nbt.putInt(POTENTIAL_TU_KEY, potentialTU);
         // write used recipes
         NbtCompound nbtCompound = new NbtCompound();
         this.recipesUsed.forEach((identifier, integer) -> nbtCompound.putInt(identifier.toString(), integer));

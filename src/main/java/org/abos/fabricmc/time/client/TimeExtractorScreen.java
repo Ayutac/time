@@ -9,6 +9,7 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.abos.fabricmc.time.blocks.TimeExtractorBlockEntity;
+import org.abos.fabricmc.time.gui.TimeExtractorScreenHandler;
 
 /**
  * {@link HandledScreen} for the {@link TimeExtractorBlockEntity}.
@@ -29,6 +30,10 @@ public class TimeExtractorScreen extends HandledScreen<ScreenHandler> {
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        if (((TimeExtractorScreenHandler)this.handler).isExtracting()) {
+            int height = ((TimeExtractorScreenHandler)this.handler).getExtractionProgress();
+            this.drawTexture(matrices, x+62 + 1 * 18 + 1, y+17 + 1 * 18, 176, 0, 15, height + 1);
+        }
     }
 
     @Override

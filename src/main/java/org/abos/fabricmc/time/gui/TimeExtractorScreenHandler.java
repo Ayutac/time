@@ -5,19 +5,29 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.AbstractCookingRecipe;
+import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.book.RecipeBookCategory;
+import net.minecraft.screen.ArrayPropertyDelegate;
+import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import org.abos.fabricmc.time.Time;
 import org.abos.fabricmc.time.blocks.TimeExtractorBlockEntity;
+import org.abos.fabricmc.time.recipes.TimeExtractorRecipe;
 
 /**
  * {@link ScreenHandler} for the {@link TimeExtractorBlockEntity}.
  *
- * Mostly copied from <a href="https://fabricmc.net/wiki/tutorial:screenhandler">this tutorial</a>
+ * Mostly copied from <a href="https://fabricmc.net/wiki/tutorial:screenhandler">this</a>
+ * and <a href="https://fabricmc.net/wiki/tutorial:propertydelegates">this tutorial</a>.
  */
 public class TimeExtractorScreenHandler extends ScreenHandler {
 
     private final Inventory inventory;
+
+    private final PropertyDelegate propertyDelegate;
 
     /*
      * This constructor gets called on the client when the server wants it to open the screenHandler,
@@ -25,7 +35,7 @@ public class TimeExtractorScreenHandler extends ScreenHandler {
      * sync this empty inventory with the inventory on the server.
      */
     public TimeExtractorScreenHandler(int syncId, PlayerInventory playerInventory) {
-        this(syncId, playerInventory, new SimpleInventory(TimeExtractorBlockEntity.INVENTORY_SIZE));
+        this(syncId, playerInventory, new SimpleInventory(TimeExtractorBlockEntity.INVENTORY_SIZE),new ArrayPropertyDelegate(TimeExtractorBlockEntity.PROPERTY_DELEGATE_SIZE));
     }
 
     /*
@@ -33,13 +43,18 @@ public class TimeExtractorScreenHandler extends ScreenHandler {
      * the server knows the inventory of the container and can therefore directly provide it as an argument.
      * This inventory will then be synced to the client.
      */
-    public TimeExtractorScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
+    public TimeExtractorScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, PropertyDelegate propertyDelegate) {
         super(Time.TIME_EXTRACTOR_SCREEN_HANDLER, syncId);
         checkSize(inventory, TimeExtractorBlockEntity.INVENTORY_SIZE);
         this.inventory = inventory;
+        this.propertyDelegate = propertyDelegate;
         // some inventories do custom logic when a player opens it.
         inventory.onOpen(playerInventory.player);
-
+        // register properties so they are synced
+        if (this.propertyDelegate != null)
+            addProperties(this.propertyDelegate);
+        else
+            Time.LOGGER.warn("Property delegate for {} missing, this shouldn't happen. Animations will not occur.",TimeExtractorScreenHandler.class.getName());
         // This will place the slot in the correct locations for a 3x3 Grid. The slots exist on both server and client!
         // This will not render the background of the slots however, this is the Screens job
         int m;
@@ -57,7 +72,6 @@ public class TimeExtractorScreenHandler extends ScreenHandler {
         for (m = 0; m < 9; ++m) {
             this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
         }
-
     }
 
     @Override
@@ -89,5 +103,19 @@ public class TimeExtractorScreenHandler extends ScreenHandler {
         }
 
         return newStack;
+    }
+
+    public boolean isExtracting() {
+        return this.propertyDelegate.get(1) > 0; // remaining TU
+    }
+
+    public int getExtractionProgress() {
+        int tickCounter = this.propertyDelegate.get(0);
+        int remainingTU = this.propertyDelegate.get(1);
+        int potentialTU = this.propertyDelegate.get(2);
+        int ticksPerTU = TimeExtractorBlockEntity.getTicksNeeded();
+        int currentProgress = (potentialTU-remainingTU)*ticksPerTU + tickCounter;
+        int pixelHeight = 18;
+        return currentProgress * pixelHeight / (potentialTU*ticksPerTU);
     }
 }
