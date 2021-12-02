@@ -11,7 +11,9 @@
       "conditions": {
         "items": [
           {
-            "item": "time:amethyme_shard"
+            "items": [
+              "time:amethyme_shard"
+              ]
           }
         ]
       }
