@@ -1,6 +1,5 @@
 package org.abos.fabricmc.time.recipes;
 
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.recipe.Recipe;
@@ -36,13 +35,12 @@ public class TimeExtractorRecipe implements Recipe<TimeExtractorBlockEntity> {
 
     protected int extractedTU;
 
-    // TODO finish this doc
     /**
-     *
-     * @param id
-     * @param input
-     * @param output
-     * @param extractedTU
+     * Creates an extractor recipe from the given parameters
+     * @param id the name of the recipe
+     * @param input the extraction material
+     * @param output the extracted material
+     * @param extractedTU The amount of TUs unleashed. If less than {@link #MIN_EXTRACTION_TU}, will default to that.
      * @throws NullPointerException If any parameter refers to {@code null}.
      */
     @Contract("null,_,_,_->fail; _,null,_,_->fail; _,_,null,_->fail")
@@ -101,5 +99,10 @@ public class TimeExtractorRecipe implements Recipe<TimeExtractorBlockEntity> {
     @Override
     public RecipeType<?> getType() {
         return Type.INSTANCE;
+    }
+
+    @Override
+    public ItemStack createIcon() {
+        return new ItemStack(Time.TIME_EXTRACTOR.asItem());
     }
 }

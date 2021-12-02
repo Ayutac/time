@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "time:extract_amethyme_shard"
+    ]
+  },
+  "criteria": {
+    "has_amethyme_shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:amethyme_shard"
+              ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "time:extract_amethyme_shard"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_amethyme_shard",
+      "has_the_recipe"
+    ]
+  ]
+}
