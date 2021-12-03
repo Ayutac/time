@@ -1,8 +1,6 @@
 package org.abos.fabricmc.time.blocks;
 
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -11,13 +9,21 @@ import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.abos.fabricmc.time.Time;
 import org.jetbrains.annotations.Nullable;
 
 public class TimeExtractorBlock extends BlockWithEntity {
+
+    protected VoxelShape SHAPE_BOTTOM = Block.createCuboidShape(0d,0d, 0d, 16d, 3d, 16d);
+    protected VoxelShape SHAPE_COLUMN = Block.createCuboidShape(1d,3d, 1d, 15d, 16d, 15d);
+    protected VoxelShape SHAPE = VoxelShapes.combineAndSimplify(SHAPE_BOTTOM,SHAPE_COLUMN, BooleanBiFunction.OR);
 
     public TimeExtractorBlock(Settings settings) {
         super(settings);
@@ -33,6 +39,12 @@ public class TimeExtractorBlock extends BlockWithEntity {
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
+        return SHAPE;
     }
 
     @SuppressWarnings("deprecation")

@@ -2,7 +2,7 @@
   "parent": "block/block",
   "credit": "Made with Blockbench, textures by Ayutac",
   "textures": {
-    "particle": "time:block/time_extractor_bottom",
+    "particle": "time:block/time_extractor_front",
     "bottom": "time:block/time_extractor_bottom",
     "top": "time:block/time_extractor_top",
     "side": "time:block/time_extractor_side",

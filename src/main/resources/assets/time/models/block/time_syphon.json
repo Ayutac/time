@@ -2,7 +2,7 @@
   "parent": "block/block",
   "credit": "Made with Blockbench, textures by Ayutac",
   "textures": {
-    "particle": "time:block/time_syphon_top",
+    "particle": "time:block/time_syphon_front",
     "bottom": "time:block/time_syphon_bottom",
     "top": "time:block/time_syphon_top",
     "front": "time:block/time_syphon_front",
