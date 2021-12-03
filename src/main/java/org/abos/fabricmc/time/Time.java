@@ -61,15 +61,15 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 	public static ToolItem TIME_STAFF = new TimeStaff();
 
 	public static final String TIME_COLLECTOR_STR = "time_collector"; // if changed, update the assets as well
-	public static final Block TIME_COLLECTOR = new TimeCollectorBlock(getTimeBlockSettings());
+	public static final Block TIME_COLLECTOR = new TimeCollectorBlock(getTimeBlockSettings().nonOpaque());
 
 	public static final String TIME_SYPHON_STR = "time_syphon"; // if changed, update the assets as well
-	public static final Block TIME_SYPHON = new TimeSyphonBlock(getTimeBlockSettings());
+	public static final Block TIME_SYPHON = new TimeSyphonBlock(getTimeBlockSettings().nonOpaque());
 	public static BlockEntityType<TimeSyphonBlockEntity> TIME_SYPHON_ENTITY;
 
 	// if name is changed, update the assets as well, especially the recipes using this as a recipe type
 	public static final String TIME_EXTRACTOR_STR = "time_extractor";
-	public static final Block TIME_EXTRACTOR = new TimeExtractorBlock(getTimeBlockSettings());
+	public static final Block TIME_EXTRACTOR = new TimeExtractorBlock(getTimeBlockSettings().nonOpaque());
 	public static BlockEntityType<TimeExtractorBlockEntity> TIME_EXTRACTOR_ENTITY;
 	public static ScreenHandlerType<TimeExtractorScreenHandler> TIME_EXTRACTOR_SCREEN_HANDLER;
 
