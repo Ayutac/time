@@ -25,8 +25,12 @@ public class TimeExtractorBlock extends BlockWithEntity {
     protected VoxelShape SHAPE_COLUMN = Block.createCuboidShape(1d,3d, 1d, 15d, 16d, 15d);
     protected VoxelShape SHAPE = VoxelShapes.combineAndSimplify(SHAPE_BOTTOM,SHAPE_COLUMN, BooleanBiFunction.OR);
 
-    public TimeExtractorBlock(Settings settings) {
+    protected TimeExtractorBlock(Settings settings) {
         super(settings);
+    }
+
+    public TimeExtractorBlock() {
+        this(Time.getTimeBlockSettings().nonOpaque());
     }
 
     @Nullable
@@ -78,7 +82,7 @@ public class TimeExtractorBlock extends BlockWithEntity {
     // as required by tutorial
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, Time.TIME_EXTRACTOR_ENTITY, (world1, pos, state1, be) -> TimeExtractorBlockEntity.tick(world1, pos, state1, be));
+        return checkType(type, Time.TIME_EXTRACTOR_ENTITY, TimeExtractorBlockEntity::tick);
     }
 
 }

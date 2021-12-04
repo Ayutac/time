@@ -25,8 +25,12 @@ public class TimeSyphonBlock extends BlockWithEntity {
     protected VoxelShape SHAPE_TOP = Block.createCuboidShape(0d,12d, 0d, 16d, 16d, 16d);
     protected VoxelShape SHAPE = VoxelShapes.combineAndSimplify(SHAPE_COLUMN,SHAPE_TOP, BooleanBiFunction.OR);
 
-    public TimeSyphonBlock(Settings settings) {
+    protected TimeSyphonBlock(Settings settings) {
         super(settings);
+    }
+
+    public TimeSyphonBlock() {
+        this(Time.getTimeBlockSettings().nonOpaque());
     }
 
     @Nullable
@@ -87,7 +91,7 @@ public class TimeSyphonBlock extends BlockWithEntity {
     // as required by tutorial
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, Time.TIME_SYPHON_ENTITY, (world1, pos, state1, be) -> TimeSyphonBlockEntity.tick(world1, pos, state1, be));
+        return checkType(type, Time.TIME_SYPHON_ENTITY, TimeSyphonBlockEntity::tick);
     }
 
 }

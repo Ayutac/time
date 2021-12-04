@@ -54,7 +54,7 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 			() -> new ItemStack(Items.CLOCK));
 	public static Item.Settings getTimeItemSettings() {return new FabricItemSettings().group(Time.TIME_GROUP);}
 
-	private static AbstractBlock.Settings getTimeBlockSettings() {return FabricBlockSettings.of(Material.AMETHYST).strength(2.5f);}
+	public static AbstractBlock.Settings getTimeBlockSettings() {return FabricBlockSettings.of(Material.AMETHYST).strength(2.5f);}
 
 	public static final Item TIMEY_WIMEY = new Item(getTimeItemSettings());
 	public static final Item AMETHYME_SHARD = new Item(getTimeItemSettings());
@@ -66,15 +66,15 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 	public static ToolItem TIME_STAFF = new TimeStaff();
 
 	public static final String TIME_COLLECTOR_STR = "time_collector"; // if changed, update the assets as well
-	public static final Block TIME_COLLECTOR = new TimeCollectorBlock(getTimeBlockSettings().nonOpaque());
+	public static final Block TIME_COLLECTOR = new TimeCollectorBlock();
 
 	public static final String TIME_SYPHON_STR = "time_syphon"; // if changed, update the assets as well
-	public static final Block TIME_SYPHON = new TimeSyphonBlock(getTimeBlockSettings().nonOpaque());
+	public static final Block TIME_SYPHON = new TimeSyphonBlock();
 	public static BlockEntityType<TimeSyphonBlockEntity> TIME_SYPHON_ENTITY;
 
 	// if name is changed, update the assets as well, especially the recipes using this as a recipe type
 	public static final String TIME_EXTRACTOR_STR = "time_extractor";
-	public static final Block TIME_EXTRACTOR = new TimeExtractorBlock(getTimeBlockSettings().nonOpaque());
+	public static final Block TIME_EXTRACTOR = new TimeExtractorBlock();
 	public static BlockEntityType<TimeExtractorBlockEntity> TIME_EXTRACTOR_ENTITY;
 	public static ScreenHandlerType<TimeExtractorScreenHandler> TIME_EXTRACTOR_SCREEN_HANDLER;
 

@@ -32,8 +32,12 @@ public class TimeCollectorBlock extends Block {
                     VoxelShapes.combineAndSimplify(SHAPE_LAYER_3, SHAPE_LAYER_4,
                             BooleanBiFunction.OR), BooleanBiFunction.OR), BooleanBiFunction.OR);
 
-    public TimeCollectorBlock(Settings settings) {
+    protected TimeCollectorBlock(Settings settings) {
         super(settings);
+    }
+
+    public TimeCollectorBlock() {
+        this(Time.getTimeBlockSettings().nonOpaque());
     }
 
     @SuppressWarnings("deprecation")
