@@ -16,10 +16,10 @@ public class VillagerEntityMixin {
 
     @Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
     private void interactMob(PlayerEntity player, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (player != null && (player.getMainHandStack().isOf(Time.TIMEY_WAND) || player.getMainHandStack().isOf(Time.TIME_WAND)))
+        if (player != null && (player.getMainHandStack().isIn(Time.WANDS)))
             cir.setReturnValue(player.getMainHandStack().getItem().useOnEntity(player.getMainHandStack(), player, (LivingEntity)(Object)this, hand));
-        // this will disable trading while holding a time(y) wand in the right hand
-        // this is intended
+        // this will disable trading while holding a wand in the right hand, even if it has no effect on the villager
+        // this is intended, so players are careful with using wands in combinations with trades
     }
 
 }

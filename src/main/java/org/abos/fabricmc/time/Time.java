@@ -8,6 +8,7 @@ import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
+import net.fabricmc.fabric.api.tag.TagFactory;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -16,6 +17,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.*;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.abos.fabricmc.time.blocks.*;
@@ -35,14 +37,17 @@ import org.apache.logging.log4j.Logger;
 public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick {
 
 	public static final String MOD_ID = "time"; // if changed, update fabric.mod.json and assets as well
-
 	public static final String MOD_NAME = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getName();
-
 	public static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString();
 
 	public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
-
 	public static final Config CONFIG = new Config();
+
+	// if any name is changed, change the corresponding tag data files accordingly
+	public static final Tag<Item> SWORDS = TagFactory.ITEM.create(new Identifier("c", "swords"));
+	public static final Tag<Item> WANDS = TagFactory.ITEM.create(new Identifier("c", "wands"));
+	public static final Tag<Block> TARDIS_BLOCKS = TagFactory.BLOCK.create(new Identifier(MOD_ID, "tardis_blocks"));
+	public static final Tag<Item> ESSENCE_SHARDS = TagFactory.ITEM.create(new Identifier(MOD_ID, "essence_shards"));
 
 	public static final ItemGroup TIME_GROUP = FabricItemGroupBuilder.build(
 			new Identifier(MOD_ID, "general"), // if changed, update language assets as well

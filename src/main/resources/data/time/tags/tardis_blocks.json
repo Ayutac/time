@@ -1,0 +1,8 @@
+{
+  "replace": true,
+  "values": [
+    "time:time_collector",
+    "time:time_syphon",
+    "time:time_extractor"
+  ]
+}
