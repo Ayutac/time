@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:time_sword"
+    },
+    "title": {
+      "translate": "advancements.time.time_sword"
+    },
+    "description": {
+      "translate": "advancements.time.time_sword.desc"
+    }
+  },
+  "parent": "time:amethyme_shard",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:time_sword"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

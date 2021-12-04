@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:timey_wand"
+    },
+    "title": {
+      "translate": "advancements.time.timey_wand"
+    },
+    "description": {
+      "translate": "advancements.time.timey_wand.desc"
+    }
+  },
+  "parent": "time:amethyme_shard",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:timey_wand"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

@@ -3,6 +3,19 @@
   "gamerule.dragon_egg_syphon_ticks": "Ticks/cTU for syphoning Dragon Egg",
   "gamerule.ticks_per_extracted_tu": "Ticks per extracted TU",
 
+  "advancements.time.root": "Wibbly Wobbly",
+  "advancements.time.root.desc": "Time isn't linear",
+  "advancements.time.timey_wimey": "Timey Wimey",
+  "advancements.time.timey_wimey.desc": "Worth the Diamond",
+  "advancements.time.time_collector": "And now we wait",
+  "advancements.time.time_collector.desc": "Place a Time Collector",
+  "advancements.time.amethyme_shard": "This saved some time!",
+  "advancements.time.amethyme_shard.desc": "Use an Amethyst Shard on a charged Time Collector",
+  "advancements.time.time_sword": "Adventure Time",
+  "advancements.time.time_sword.desc": "Come on, grab your friends!",
+  "advancements.time.timey_wand": "It's a kind of magic",
+  "advancements.time.timey_wand.desc": "Craft the Time Wand's younger sibling",
+
   "itemGroup.time.general": "Time mod",
 
   "item.time.timey_wimey": "Timey Wimey",

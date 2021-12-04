@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:time_collector"
+    },
+    "title": {
+      "translate": "advancements.time.time_collector"
+    },
+    "description": {
+      "translate": "advancements.time.time_collector.desc"
+    }
+  },
+  "parent": "time:timey_wimey",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "time:time_collector"
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:amethyme_shard"
+    },
+    "title": {
+      "translate": "advancements.time.amethyme_shard"
+    },
+    "description": {
+      "translate": "advancements.time.amethyme_shard.desc"
+    }
+  },
+  "parent": "time:time_collector",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:amethyme_shard"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
