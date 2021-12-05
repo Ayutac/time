@@ -82,7 +82,7 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 		// if any name is changed, update the assets as well
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "timey_wimey"), TIMEY_WIMEY);
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, AmethymeShard.ID), AMETHYME_SHARD);
-		AmethymeShard.register(); // registers all essence shards except for the (empty) amethyme shard, which comes first
+		AmethymeShard.register(); // registers all amethyme shards except for the (empty) amethyme shard, which comes first
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "time_sword"), TIME_SWORD);
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "timey_wand"), TIMEY_WAND);
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "time_wand"), TIME_WAND);
