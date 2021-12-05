@@ -25,10 +25,7 @@ import org.abos.fabricmc.time.components.BooleanComponent;
 import org.abos.fabricmc.time.components.CounterComponent;
 import org.abos.fabricmc.time.components.TimeComponents;
 import org.abos.fabricmc.time.gui.TimeExtractorScreenHandler;
-import org.abos.fabricmc.time.items.AmethymeToolMaterial;
-import org.abos.fabricmc.time.items.TimeStaff;
-import org.abos.fabricmc.time.items.TimeWand;
-import org.abos.fabricmc.time.items.TimeyWand;
+import org.abos.fabricmc.time.items.*;
 import org.abos.fabricmc.time.recipes.TimeExtractorRecipe;
 import org.abos.fabricmc.time.recipes.TimeExtractorRecipeSerializer;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +33,10 @@ import org.apache.logging.log4j.Logger;
 
 public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick {
 
-	public static final String MOD_ID = "time"; // if changed, update fabric.mod.json and assets as well
+	// if changed, update fabric.mod.json and assets as well
+	// don't forget to look up use of this variable for even more changes...
+	public static final String MOD_ID = "time";
+
 	public static final String MOD_NAME = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getName();
 	public static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString();
 
@@ -47,17 +47,16 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 	public static final Tag<Item> SWORDS = TagFactory.ITEM.create(new Identifier("c", "swords"));
 	public static final Tag<Item> WANDS = TagFactory.ITEM.create(new Identifier("c", "wands"));
 	public static final Tag<Block> TARDIS_BLOCKS = TagFactory.BLOCK.create(new Identifier(MOD_ID, "tardis_blocks"));
-	public static final Tag<Item> ESSENCE_SHARDS = TagFactory.ITEM.create(new Identifier(MOD_ID, "essence_shards"));
+	public static final Tag<Item> AMETHYME_SHARDS = TagFactory.ITEM.create(new Identifier(MOD_ID, AmethymeShard.ID+"s"));
 
 	public static final ItemGroup TIME_GROUP = FabricItemGroupBuilder.build(
 			new Identifier(MOD_ID, "general"), // if changed, update language assets as well
 			() -> new ItemStack(Items.CLOCK));
 	public static Item.Settings getTimeItemSettings() {return new FabricItemSettings().group(Time.TIME_GROUP);}
-
 	public static AbstractBlock.Settings getTimeBlockSettings() {return FabricBlockSettings.of(Material.AMETHYST).strength(2.5f);}
 
 	public static final Item TIMEY_WIMEY = new Item(getTimeItemSettings());
-	public static final Item AMETHYME_SHARD = new Item(getTimeItemSettings());
+	public static final AmethymeShard AMETHYME_SHARD = new AmethymeShard();
 
 	public static ToolItem TIME_SWORD = new SwordItem(AmethymeToolMaterial.INSTANCE, 25, 5f,
 			getTimeItemSettings().maxDamage(3));
@@ -82,7 +81,8 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 	public void onInitialize() {
 		// if any name is changed, update the assets as well
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "timey_wimey"), TIMEY_WIMEY);
-		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "amethyme_shard"), AMETHYME_SHARD);
+		Registry.register(Registry.ITEM, new Identifier(MOD_ID, AmethymeShard.ID), AMETHYME_SHARD);
+		AmethymeShard.register(); // registers all essence shards except for the (empty) amethyme shard, which comes first
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "time_sword"), TIME_SWORD);
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "timey_wand"), TIMEY_WAND);
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "time_wand"), TIME_WAND);

@@ -1,7 +1,7 @@
 {
   "type": "time:time_extractor",
   "input": {
-    "item": "time:amethyme_shard"
+    "tag": "time:amethyme_shards"
   },
   "outputItem": "minecraft:amethyst_shard",
   "outputItemAmount": 1,
