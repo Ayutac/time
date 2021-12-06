@@ -1,10 +1,11 @@
 package org.abos.fabricmc.time.items;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.CropBlock;
+import net.minecraft.block.GourdBlock;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.MobSpawnerBlockEntity;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -14,10 +15,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.world.MobSpawnerLogic;
 import net.minecraft.world.World;
 import org.abos.fabricmc.time.Time;
 import org.abos.fabricmc.time.Utils;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +36,7 @@ public class AmethymeShard extends Item {
      * 4. Add to tag asset.
      * 5. Add model.
      * 6. Add texture.
-     * 7. Add conversions via shardForBlock for blocks and mixins for everything else.
+     * 7. Add conversions via static shardFor methods.
      */
 
     public static final AmethymeShard BEETROOT = new AmethymeShard();
@@ -47,6 +48,7 @@ public class AmethymeShard extends Item {
     public static final AmethymeShard CREEPER = new AmethymeShard();
     public static final AmethymeShard ENDERMAN = new AmethymeShard();
     public static final AmethymeShard GHAST = new AmethymeShard();
+    public static final AmethymeShard IRON_GOLEM = new AmethymeShard();
     public static final AmethymeShard MAGMA_SLIME = new AmethymeShard();
     public static final AmethymeShard MELON = new AmethymeShard();
     public static final AmethymeShard OVERWORLD_HOSTILES = new AmethymeShard();
@@ -74,6 +76,7 @@ public class AmethymeShard extends Item {
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/creeper"), CREEPER);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/enderman"), ENDERMAN);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/ghast"), GHAST);
+        Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/iron_golem"), IRON_GOLEM);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/magma_slime"), MAGMA_SLIME);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/melon"), MELON);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/overworld_hostiles"), OVERWORLD_HOSTILES);
@@ -92,7 +95,7 @@ public class AmethymeShard extends Item {
     }
 
     /**
-     * Creates an essence shard item.
+     * Creates an amethyme shard item.
      */
     public AmethymeShard() {
         super(Time.getTimeItemSettings());
@@ -102,8 +105,7 @@ public class AmethymeShard extends Item {
         return this == Time.AMETHYME_SHARD;
     }
 
-    @Nullable
-    public static ItemStack getUnboundStack(@NotNull PlayerEntity player) {
+    public static @Nullable ItemStack getUnboundStack(@NotNull PlayerEntity player) {
         Utils.requireNonNull(player, "player");
         if (player.getMainHandStack().isOf(Time.AMETHYME_SHARD))
             return player.getMainHandStack();
@@ -112,6 +114,7 @@ public class AmethymeShard extends Item {
         return null;
     }
 
+    // use one of the static methods mixin injections if needed, not this one
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
         PlayerEntity player = context.getPlayer();
@@ -123,7 +126,7 @@ public class AmethymeShard extends Item {
         World world = context.getWorld();
         BlockPos pos = context.getBlockPos();
         BlockState blockState = world.getBlockState(pos);
-        AmethymeShard shardResult = shardForBlock(blockState);
+        AmethymeShard shardResult = shardForStorageBlock(blockState);
         if (shardResult == null && blockState.isOf(Blocks.SPAWNER)) {
             MobSpawnerBlockEntity entity = (MobSpawnerBlockEntity)(world.getBlockEntity(pos));
             shardResult = shardForSpawner(entity.getLogic().getRenderedEntity(entity.getWorld()).getType());
@@ -137,38 +140,94 @@ public class AmethymeShard extends Item {
         return ActionResult.PASS;
     }
 
-    // use this method or shardForSpawner for mixin injections if needed, not useOnBlock
-    @Nullable
-    public AmethymeShard shardForBlock(BlockState blockState) {
+    @Contract(pure = true)
+    public static @Nullable AmethymeShard shardForCrop(@Nullable BlockState blockState) {
+        if (blockState == null)
+            return null;
+        if (blockState.isOf(Blocks.BEETROOTS) && ((CropBlock)Blocks.BEETROOTS).isMature(blockState))
+            return BEETROOT;
+        if (blockState.isOf(Blocks.CARROTS) && ((CropBlock)Blocks.CARROTS).isMature(blockState))
+            return CARROT;
+        if (blockState.isOf(Blocks.POTATOES) && ((CropBlock)Blocks.POTATOES).isMature(blockState))
+            return POTATO;
+        if (blockState.isOf(Blocks.WHEAT) && ((CropBlock)Blocks.WHEAT).isMature(blockState))
+            return WHEAT;
+        return null;
+    }
+
+    @Contract(pure = true)
+    public static @Nullable AmethymeShard shardForGourd(@Nullable BlockState blockState) {
+        if (blockState == null)
+            return null;
+        if (blockState.isOf(Blocks.PUMPKIN)) // TODO add stem check
+            return PUMPKIN;
+        if (blockState.isOf(Blocks.MELON)) // TODO add stem check
+            return MELON;
+        return null;
+    }
+
+    @Contract(pure = true)
+    public @Nullable static AmethymeShard shardForStorageBlock(@Nullable  BlockState blockState) {
+        if (blockState == null)
+            return null;
         if (blockState.isOf(Blocks.HAY_BLOCK))
             return WHEAT;
         return null;
     }
 
-    // use this method or shardForBlock for mixin injections if needed, not useOnBlock
-    @Nullable
-    public AmethymeShard shardForSpawner(EntityType<?> type) {
-        if (type == EntityType.ZOMBIE) {
-            return ZOMBIE;
-        }
-        if (type == EntityType.SKELETON) {
-            return SKELETON;
-        }
-        if (type == EntityType.SPIDER) {
-            return SPIDER;
-        }
-        if (type == EntityType.CAVE_SPIDER) {
+    @Contract(pure = true)
+    public static @Nullable AmethymeShard shardForMob(@Nullable EntityType<?> type) {
+        if (type == EntityType.ZOMBIE || type == EntityType.SKELETON || type == EntityType.SPIDER || type == EntityType.CREEPER)
+            return OVERWORLD_HOSTILES;
+        if (type == EntityType.WITCH)
+            return WITCH;
+        if (type == EntityType.CAVE_SPIDER)
             return CAVE_SPIDER;
-        }
-        if (type == EntityType.SILVERFISH) {
+        if (type == EntityType.SILVERFISH)
             return SILVERFISH;
-        }
-        if (type == EntityType.BLAZE) {
+        if (type == EntityType.SLIME)
+            return SLIME;
+        if (type == EntityType.IRON_GOLEM)
+            return IRON_GOLEM;
+        if (type == EntityType.ENDERMAN)
+            return ENDERMAN;
+        // nether mobs
+        if (type == EntityType.BLAZE)
             return BLAZE;
-        }
-        if (type == EntityType.MAGMA_CUBE) {
+        if (type == EntityType.GHAST)
+            return GHAST;
+        if (type == EntityType.MAGMA_CUBE)
             return MAGMA_SLIME;
-        }
+        if (type == EntityType.ZOMBIFIED_PIGLIN)
+            return WITCH;
+        // friendly mobs
+        if (type == EntityType.CHICKEN)
+            return CHICKEN;
+        if (type == EntityType.COW)
+            return COW;
+        if (type == EntityType.PIG)
+            return PIG;
+        if (type == EntityType.SHEEP)
+            return SHEEP;
+        return null;
+    }
+
+    @Contract(pure = true)
+    public static @Nullable AmethymeShard shardForSpawner(@Nullable EntityType<?> type) {
+        if (type == EntityType.BLAZE)
+            return BLAZE;
+        if (type == EntityType.CAVE_SPIDER)
+            return CAVE_SPIDER;
+        if (type == EntityType.MAGMA_CUBE)
+            return MAGMA_SLIME;
+        if (type == EntityType.SILVERFISH)
+            return SILVERFISH;
+        if (type == EntityType.SKELETON)
+            return SKELETON;
+        if (type == EntityType.SPIDER)
+            return SPIDER;
+        if (type == EntityType.ZOMBIE)
+            return ZOMBIE;
         return null;
     }
 }

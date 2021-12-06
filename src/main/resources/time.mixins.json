@@ -4,7 +4,9 @@
   "package": "org.abos.fabricmc.time.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlockMixin",
     "HoglinEntityEnvoker",
+    "LivingEntityMixin",
     "PiglinEntityEnvoker",
     "VillagerEntityEnvoker",
     "VillagerEntityMixin"
