@@ -65,6 +65,43 @@ public final class Config {
     // the default game rule default in case config couldn't be loaded
     public static final int TICKS_PER_EXTRACTED_TU_DEFAULT = 1000; // an in-game day hour at normal tick rate
 
+    // the name of the game rule
+    public static final String PERCENTAGE_SHARD_CROP_STR = "percentage_shard_crop"; // if changed, also change language assets
+    // the name of the default value for the game rule
+    public static final String PERCENTAGE_SHARD_CROP_DEFAULT_STR = PERCENTAGE_SHARD_CROP_STR + "_default";
+    // the default game rule default in case config couldn't be loaded
+    public static final int PERCENTAGE_SHARD_CROP_DEFAULT = 10; // in percent
+
+    // the name of the game rule
+    public static final String PERCENTAGE_SHARD_STORAGE_STR = "percentage_shard_storage"; // if changed, also change language assets
+    // the name of the default value for the game rule
+    public static final String PERCENTAGE_SHARD_STORAGE_DEFAULT_STR = PERCENTAGE_SHARD_STORAGE_STR + "_default";
+    // the default game rule default in case config couldn't be loaded
+    public static final int PERCENTAGE_SHARD_STORAGE_DEFAULT = 100; // in percent
+    // the block gets destroyed, so 100% is recommended
+
+    // the name of the game rule
+    public static final String PERCENTAGE_SHARD_MOB_STR = "percentage_shard_mob"; // if changed, also change language assets
+    // the name of the default value for the game rule
+    public static final String PERCENTAGE_SHARD_MOB_DEFAULT_STR = PERCENTAGE_SHARD_MOB_STR + "_default";
+    // the default game rule default in case config couldn't be loaded
+    public static final int PERCENTAGE_SHARD_MOB_DEFAULT = 5; // in percent
+
+    // the name of the game rule
+    public static final String PERCENTAGE_SHARD_CATTLE_STR = "percentage_shard_cattle"; // if changed, also change language assets
+    // the name of the default value for the game rule
+    public static final String PERCENTAGE_SHARD_CATTLE_DEFAULT_STR = PERCENTAGE_SHARD_CATTLE_STR + "_default";
+    // the default game rule default in case config couldn't be loaded
+    public static final int PERCENTAGE_SHARD_CATTLE_DEFAULT = 50; // in percent
+
+    // the name of the game rule
+    public static final String PERCENTAGE_SHARD_SPAWNER_STR = "percentage_shard_spawner"; // if changed, also change language assets
+    // the name of the default value for the game rule
+    public static final String PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR = PERCENTAGE_SHARD_SPAWNER_STR + "_default";
+    // the default game rule default in case config couldn't be loaded
+    public static final int PERCENTAGE_SHARD_SPAWNER_DEFAULT = 100; // in percent
+    // the spawner gets destroyed, so 100% is recommended
+
     //----------------------------------------------------------
     // Properties field and default Properties field
     //----------------------------------------------------------
@@ -81,6 +118,11 @@ public final class Config {
         DEFAULT_PROPERTIES.setProperty(TU_INCREASE_DEFAULT_STR, Integer.toString(TU_INCREASE_DEFAULT));
         DEFAULT_PROPERTIES.setProperty(DRAGON_EGG_SYPHON_TICKS_DEFAULT_STR, Integer.toString(DRAGON_EGG_SYPHON_TICKS_DEFAULT));
         DEFAULT_PROPERTIES.setProperty(TICKS_PER_EXTRACTED_TU_DEFAULT_STR, Integer.toString(TICKS_PER_EXTRACTED_TU_DEFAULT));
+        DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_CROP_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_CROP_DEFAULT));
+        DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_STORAGE_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_STORAGE_DEFAULT));
+        DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_MOB_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_MOB_DEFAULT));
+        DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_CATTLE_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_CATTLE_DEFAULT));
+        DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_SPAWNER_DEFAULT));
     }
 
     /**
@@ -126,18 +168,63 @@ public final class Config {
     // the game rule default
     public int getTicksPerExtractedTUDefault() {return Integer.parseInt(properties.getProperty(TICKS_PER_EXTRACTED_TU_DEFAULT_STR));}
 
+    // the game rule
+    private final GameRules.Key<GameRules.IntRule> percentageShardCropRule;
+    // the game rule accessor
+    public GameRules.Key<GameRules.IntRule> getPercentageShardCropRule() {return percentageShardCropRule;}
+    // the game rule default
+    public int getPercentageShardCropDefault() {return Integer.parseInt(properties.getProperty(PERCENTAGE_SHARD_CROP_DEFAULT_STR));}
+
+    // the game rule
+    private final GameRules.Key<GameRules.IntRule> percentageShardStorageRule;
+    // the game rule accessor
+    public GameRules.Key<GameRules.IntRule> getPercentageShardStorageRule() {return percentageShardStorageRule;}
+    // the game rule default
+    public int getPercentageShardStorageDefault() {return Integer.parseInt(properties.getProperty(PERCENTAGE_SHARD_STORAGE_DEFAULT_STR));}
+
+    // the game rule
+    private final GameRules.Key<GameRules.IntRule> percentageShardMobRule;
+    // the game rule accessor
+    public GameRules.Key<GameRules.IntRule> getPercentageShardMobRule() {return percentageShardMobRule;}
+    // the game rule default
+    public int getPercentageShardMobDefault() {return Integer.parseInt(properties.getProperty(PERCENTAGE_SHARD_MOB_DEFAULT_STR));}
+
+    // the game rule
+    private final GameRules.Key<GameRules.IntRule> percentageShardCattleRule;
+    // the game rule accessor
+    public GameRules.Key<GameRules.IntRule> getPercentageShardCattleRule() {return percentageShardCattleRule;}
+    // the game rule default
+    public int getPercentageShardCattleDefault() {return Integer.parseInt(properties.getProperty(PERCENTAGE_SHARD_CATTLE_DEFAULT_STR));}
+
+    // the game rule
+    private final GameRules.Key<GameRules.IntRule> percentageShardSpawnerRule;
+    // the game rule accessor
+    public GameRules.Key<GameRules.IntRule> getPercentageShardSpawnerRule() {return percentageShardSpawnerRule;}
+    // the game rule default
+    public int getPercentageShardSpawnerDefault() {return Integer.parseInt(properties.getProperty(PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR));}
+
     //----------------------------------------------------------
     // Constructor
     //----------------------------------------------------------
 
     public Config() {
         properties = loadProperties();
-        tuIncreaseRule = GameRuleRegistry.register(TU_INCREASE_STR, GameRules.Category.MISC,
+        tuIncreaseRule = GameRuleRegistry.register(TU_INCREASE_STR, GameRules.Category.UPDATES,
                 GameRuleFactory.createIntRule(getTUIncreaseDefault()));
-        dragonEggSyphonTicksRule = GameRuleRegistry.register(DRAGON_EGG_SYPHON_TICKS_STR, GameRules.Category.MISC,
+        dragonEggSyphonTicksRule = GameRuleRegistry.register(DRAGON_EGG_SYPHON_TICKS_STR, GameRules.Category.UPDATES,
                 GameRuleFactory.createIntRule(getDragonEggSyphonTicksDefault()));
-        ticksPerExtractedTURule = GameRuleRegistry.register(TICKS_PER_EXTRACTED_TU_STR, GameRules.Category.MISC,
+        ticksPerExtractedTURule = GameRuleRegistry.register(TICKS_PER_EXTRACTED_TU_STR, GameRules.Category.UPDATES,
                 GameRuleFactory.createIntRule(getTicksPerExtractedTUDefault()));
+        percentageShardCropRule = GameRuleRegistry.register(PERCENTAGE_SHARD_CROP_STR, GameRules.Category.DROPS,
+                GameRuleFactory.createIntRule(getPercentageShardCropDefault()));
+        percentageShardStorageRule = GameRuleRegistry.register(PERCENTAGE_SHARD_STORAGE_STR, GameRules.Category.DROPS,
+                GameRuleFactory.createIntRule(getPercentageShardStorageDefault()));
+        percentageShardMobRule = GameRuleRegistry.register(PERCENTAGE_SHARD_MOB_STR, GameRules.Category.DROPS,
+                GameRuleFactory.createIntRule(getPercentageShardMobDefault()));
+        percentageShardCattleRule = GameRuleRegistry.register(PERCENTAGE_SHARD_CATTLE_STR, GameRules.Category.DROPS,
+                GameRuleFactory.createIntRule(getPercentageShardCattleDefault()));
+        percentageShardSpawnerRule = GameRuleRegistry.register(PERCENTAGE_SHARD_SPAWNER_STR, GameRules.Category.DROPS,
+                GameRuleFactory.createIntRule(getPercentageShardSpawnerDefault()));
     }
 
     //----------------------------------------------------------
@@ -182,6 +269,51 @@ public final class Config {
         }
         catch (NumberFormatException ex) {
             Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property,TICKS_PER_EXTRACTED_TU_DEFAULT_STR,TICKS_PER_EXTRACTED_TU_DEFAULT);
+        }
+        // sanitize crop shard percentage
+        try {
+            property = properties.getProperty(PERCENTAGE_SHARD_CROP_DEFAULT_STR);
+            Integer.parseInt(property);
+            sanitized.setProperty(PERCENTAGE_SHARD_CROP_DEFAULT_STR,property);
+        }
+        catch (NumberFormatException ex) {
+            Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property, PERCENTAGE_SHARD_CROP_DEFAULT_STR,PERCENTAGE_SHARD_CROP_DEFAULT);
+        }
+        // sanitize storage shard percentage
+        try {
+            property = properties.getProperty(PERCENTAGE_SHARD_STORAGE_DEFAULT_STR);
+            Integer.parseInt(property);
+            sanitized.setProperty(PERCENTAGE_SHARD_STORAGE_DEFAULT_STR,property);
+        }
+        catch (NumberFormatException ex) {
+            Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property, PERCENTAGE_SHARD_STORAGE_DEFAULT_STR,PERCENTAGE_SHARD_STORAGE_DEFAULT);
+        }
+        // sanitize (hostile) mob shard percentage
+        try {
+            property = properties.getProperty(PERCENTAGE_SHARD_MOB_DEFAULT_STR);
+            Integer.parseInt(property);
+            sanitized.setProperty(PERCENTAGE_SHARD_MOB_DEFAULT_STR,property);
+        }
+        catch (NumberFormatException ex) {
+            Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property, PERCENTAGE_SHARD_MOB_DEFAULT_STR,PERCENTAGE_SHARD_MOB_DEFAULT);
+        }
+        // sanitize (friendly) mob shard percentage
+        try {
+            property = properties.getProperty(PERCENTAGE_SHARD_CATTLE_DEFAULT_STR);
+            Integer.parseInt(property);
+            sanitized.setProperty(PERCENTAGE_SHARD_CATTLE_DEFAULT_STR,property);
+        }
+        catch (NumberFormatException ex) {
+            Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property, PERCENTAGE_SHARD_CATTLE_DEFAULT_STR,PERCENTAGE_SHARD_CATTLE_DEFAULT);
+        }
+        // sanitize spawner shard percentage
+        try {
+            property = properties.getProperty(PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR);
+            Integer.parseInt(property);
+            sanitized.setProperty(PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR,property);
+        }
+        catch (NumberFormatException ex) {
+            Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property, PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR,PERCENTAGE_SHARD_SPAWNER_DEFAULT);
         }
         // collect unused properties in dirty properties and log them
         Hashtable<?, ?> unused = new Hashtable<>(properties);

@@ -114,32 +114,6 @@ public class AmethymeShard extends Item {
         return null;
     }
 
-    // use one of the static methods mixin injections if needed, not this one
-    @Override
-    public ActionResult useOnBlock(ItemUsageContext context) {
-        PlayerEntity player = context.getPlayer();
-        if (player == null)
-            return ActionResult.PASS;
-        ItemStack unboundStack = getUnboundStack(player);
-        if (unboundStack == null)
-            return ActionResult.PASS;
-        World world = context.getWorld();
-        BlockPos pos = context.getBlockPos();
-        BlockState blockState = world.getBlockState(pos);
-        AmethymeShard shardResult = shardForStorageBlock(blockState);
-        if (shardResult == null && blockState.isOf(Blocks.SPAWNER)) {
-            MobSpawnerBlockEntity entity = (MobSpawnerBlockEntity)(world.getBlockEntity(pos));
-            shardResult = shardForSpawner(entity.getLogic().getRenderedEntity(entity.getWorld()).getType());
-        }
-        if (shardResult != null) {
-            unboundStack.decrement(1);
-            world.breakBlock(pos, false, player);
-            player.getInventory().offerOrDrop(new ItemStack(shardResult));
-            return ActionResult.SUCCESS;
-        }
-        return ActionResult.PASS;
-    }
-
     @Contract(pure = true)
     public static @Nullable AmethymeShard shardForCrop(@Nullable BlockState blockState) {
         if (blockState == null)
@@ -213,6 +187,11 @@ public class AmethymeShard extends Item {
     }
 
     @Contract(pure = true)
+    public static boolean isCattle(@Nullable EntityType<?> type) {
+        return type == EntityType.CHICKEN || type == EntityType.COW || type == EntityType.PIG || type == EntityType.SHEEP;
+    }
+
+    @Contract(pure = true)
     public static @Nullable AmethymeShard shardForSpawner(@Nullable EntityType<?> type) {
         if (type == EntityType.BLAZE)
             return BLAZE;
@@ -229,5 +208,12 @@ public class AmethymeShard extends Item {
         if (type == EntityType.ZOMBIE)
             return ZOMBIE;
         return null;
+    }
+
+    @Contract(pure = true)
+    public static @Nullable AmethymeShard shardForSpawner(@Nullable MobSpawnerBlockEntity spawnerEntity) {
+        if (spawnerEntity == null)
+            return null;
+        return shardForSpawner(spawnerEntity.getLogic().getRenderedEntity(spawnerEntity.getWorld()).getType());
     }
 }

@@ -2,6 +2,11 @@
   "gamerule.tu_increase": "Time Unit (TU) increase per day",
   "gamerule.dragon_egg_syphon_ticks": "Ticks/cTU for syphoning Dragon Egg",
   "gamerule.ticks_per_extracted_tu": "Ticks per extracted TU",
+  "gamerule.percentage_shard_crop": "Amethyme Bounding Chance for plants in %",
+  "gamerule.percentage_shard_storage": "Amethyme Bounding Chance for storage blocks in %",
+  "gamerule.percentage_shard_mob": "Amethyme Bounding Chance for dangerous mobs in %",
+  "gamerule.percentage_shard_cattle": "Amethyme Bounding Chance for peaceful mobs in %",
+  "gamerule.percentage_shard_spawner": "Amethyme Bounding Chance for spawners in %",
 
   "advancements.time.root": "Wibbly Wobbly",
   "advancements.time.root.desc": "Time isn't linear",
