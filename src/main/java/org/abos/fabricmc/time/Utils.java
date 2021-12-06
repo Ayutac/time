@@ -6,6 +6,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.*;
+import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.world.ServerWorld;
@@ -26,7 +27,7 @@ public final class Utils {
     }
 
     public static boolean isStructure(ServerWorld world, ChunkSectionPos pos, StructureFeature<?> feature) {
-        return world.getStructures(pos, StructureFeature.FORTRESS).findAny().isPresent();
+        return world.getStructures(pos, feature).findAny().isPresent();
     }
 
     public static boolean standsOn(World world, Entity entity, Block block) {
