@@ -20,6 +20,7 @@ public class TimeExtractorScreen extends HandledScreen<ScreenHandler> {
 
     public TimeExtractorScreen(ScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
+        playerInventoryTitleY += 1; // 1px lower
     }
 
     @Override
