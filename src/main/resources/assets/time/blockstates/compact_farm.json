@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,open=false": {
+      "x": 180,
+      "model": "time:block/compact_farm"
+    },
+    "facing=down,open=true": {
+      "x": 180,
+      "model": "time:block/compact_farm_open"
+    },
+    "facing=east,open=false": {
+      "x": 90,
+      "y": 90,
+      "model": "time:block/compact_farm"
+    },
+    "facing=east,open=true": {
+      "x": 90,
+      "y": 90,
+      "model": "time:block/compact_farm_open"
+    },
+    "facing=north,open=false": {
+      "x": 90,
+      "model": "time:block/compact_farm"
+    },
+    "facing=north,open=true": {
+      "x": 90,
+      "model": "time:block/compact_farm_open"
+    },
+    "facing=south,open=false": {
+      "x": 90,
+      "y": 180,
+      "model": "time:block/compact_farm"
+    },
+    "facing=south,open=true": {
+      "x": 90,
+      "y": 180,
+      "model": "time:block/compact_farm_open"
+    },
+    "facing=up,open=false": {
+      "model": "time:block/compact_farm"
+    },
+    "facing=up,open=true": {
+      "model": "time:block/compact_farm_open"
+    },
+    "facing=west,open=false": {
+      "x": 90,
+      "y": 270,
+      "model": "time:block/compact_farm"
+    },
+    "facing=west,open=true": {
+      "x": 90,
+      "y": 270,
+      "model": "time:block/compact_farm_open"
+    }
+  }
+}

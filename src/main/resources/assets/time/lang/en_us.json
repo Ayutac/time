@@ -7,6 +7,7 @@
   "gamerule.percentage_shard_mob": "Amethyme Bounding Chance for dangerous mobs in %",
   "gamerule.percentage_shard_cattle": "Amethyme Bounding Chance for peaceful mobs in %",
   "gamerule.percentage_shard_spawner": "Amethyme Bounding Chance for spawners in %",
+  "gamerule.compact_farm_ticks": "Ticks for Compact Farm progressing",
 
   "advancements.time.root": "Wibbly Wobbly",
   "advancements.time.root.desc": "Time isn't linear",
@@ -33,6 +34,8 @@
   "block.time.time_syphon": "Time Syphon",
   "block.time.time_extractor": "Time Extractor",
   "container.time_extractor": "Time Extractor",
+  "block.time.compact_farm": "Compact Farm",
+  "container.compact_farm": "Compact Farm",
 
   "item.time.amethyme_shard": "Amethyme Shard",
   "item.time.amethyme_shards.beetroot": "Amethyme Shard (Beetroot)",

@@ -102,6 +102,13 @@ public final class Config {
     public static final int PERCENTAGE_SHARD_SPAWNER_DEFAULT = 100; // in percent
     // the spawner gets destroyed, so 100% is recommended
 
+    // the name of the game rule
+    public static final String COMPACT_FARM_TICKS_STR = "compact_farm_ticks"; // if changed, also change language assets
+    // the name of the default value for the game rule
+    public static final String COMPACT_FARM_TICKS_DEFAULT_STR = COMPACT_FARM_TICKS_STR + "_default";
+    // the default game rule default in case config couldn't be loaded
+    public static final int COMPACT_FARM_TICKS_DEFAULT = 250; // an in-game quarter-hour at normal tick rate
+
     //----------------------------------------------------------
     // Properties field and default Properties field
     //----------------------------------------------------------
@@ -123,6 +130,7 @@ public final class Config {
         DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_MOB_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_MOB_DEFAULT));
         DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_CATTLE_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_CATTLE_DEFAULT));
         DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_SPAWNER_DEFAULT));
+        DEFAULT_PROPERTIES.setProperty(COMPACT_FARM_TICKS_DEFAULT_STR, Integer.toString(COMPACT_FARM_TICKS_DEFAULT));
     }
 
     /**
@@ -203,6 +211,13 @@ public final class Config {
     // the game rule default
     public int getPercentageShardSpawnerDefault() {return Integer.parseInt(properties.getProperty(PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR));}
 
+    // the game rule
+    private final GameRules.Key<GameRules.IntRule> compactFarmTicksRule;
+    // the game rule accessor
+    public GameRules.Key<GameRules.IntRule> getCompactFarmTicksRule() {return compactFarmTicksRule;}
+    // the game rule default
+    public int getCompactFarmTicksDefault() {return Integer.parseInt(properties.getProperty(COMPACT_FARM_TICKS_DEFAULT_STR));}
+
     //----------------------------------------------------------
     // Constructor
     //----------------------------------------------------------
@@ -225,6 +240,8 @@ public final class Config {
                 GameRuleFactory.createIntRule(getPercentageShardCattleDefault()));
         percentageShardSpawnerRule = GameRuleRegistry.register(PERCENTAGE_SHARD_SPAWNER_STR, GameRules.Category.DROPS,
                 GameRuleFactory.createIntRule(getPercentageShardSpawnerDefault()));
+        compactFarmTicksRule = GameRuleRegistry.register(COMPACT_FARM_TICKS_STR, GameRules.Category.UPDATES,
+                GameRuleFactory.createIntRule(getCompactFarmTicksDefault()));
     }
 
     //----------------------------------------------------------
@@ -315,7 +332,16 @@ public final class Config {
         catch (NumberFormatException ex) {
             Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property, PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR,PERCENTAGE_SHARD_SPAWNER_DEFAULT);
         }
-        // collect unused properties in dirty properties and log them
+        // sanitize compact farm ticks default
+        try {
+            property = properties.getProperty(COMPACT_FARM_TICKS_DEFAULT_STR);
+            Integer.parseInt(property);
+            sanitized.setProperty(COMPACT_FARM_TICKS_DEFAULT_STR,property);
+        }
+        catch (NumberFormatException ex) {
+            Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property,COMPACT_FARM_TICKS_DEFAULT_STR,COMPACT_FARM_TICKS_DEFAULT);
+        }
+        // collect unused properties and log them
         Hashtable<?, ?> unused = new Hashtable<>(properties);
         for (Object key : sanitized.keySet())
             unused.remove(key);

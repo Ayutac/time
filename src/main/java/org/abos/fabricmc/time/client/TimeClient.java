@@ -14,6 +14,7 @@ public class TimeClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ScreenRegistry.register(Time.TIME_EXTRACTOR_SCREEN_HANDLER, TimeExtractorScreen::new);
+        ScreenRegistry.register(Time.COMPACT_FARM_SCREEN_HANDLER, CompactFarmScreen::new);
         BlockRenderLayerMap.INSTANCE.putBlock(Time.TIME_COLLECTOR, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Time.TIME_SYPHON, RenderLayer.getCutout());
         BlockRenderLayerMap.INSTANCE.putBlock(Time.TIME_EXTRACTOR, RenderLayer.getCutout());

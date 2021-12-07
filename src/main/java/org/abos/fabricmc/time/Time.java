@@ -24,6 +24,7 @@ import org.abos.fabricmc.time.blocks.*;
 import org.abos.fabricmc.time.components.BooleanComponent;
 import org.abos.fabricmc.time.components.CounterComponent;
 import org.abos.fabricmc.time.components.TimeComponents;
+import org.abos.fabricmc.time.gui.CompactFarmScreenHandler;
 import org.abos.fabricmc.time.gui.TimeExtractorScreenHandler;
 import org.abos.fabricmc.time.items.*;
 import org.abos.fabricmc.time.recipes.TimeExtractorRecipe;
@@ -77,6 +78,11 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 	public static BlockEntityType<TimeExtractorBlockEntity> TIME_EXTRACTOR_ENTITY;
 	public static ScreenHandlerType<TimeExtractorScreenHandler> TIME_EXTRACTOR_SCREEN_HANDLER;
 
+	public static final String COMPACT_FARM_STR = "compact_farm"; // if changed, update the assets as well
+	public static final Block COMPACT_FARM = new CompactFarmBlock();
+	public static BlockEntityType<CompactFarmBlockEntity> COMPACT_FARM_ENTITY;
+	public static ScreenHandlerType<CompactFarmScreenHandler> COMPACT_FARM_SCREEN_HANDLER;
+
 	@Override
 	public void onInitialize() {
 		// if any name is changed, update the assets as well
@@ -105,6 +111,12 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 		TIME_EXTRACTOR_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.create(TimeExtractorBlockEntity::new, TIME_EXTRACTOR).build(null));
 		TIME_EXTRACTOR_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id, TimeExtractorScreenHandler::new);
 		Registry.register(Registry.RECIPE_SERIALIZER, TimeExtractorRecipe.ID, TimeExtractorRecipeSerializer.INSTANCE);
+
+		id = new Identifier(MOD_ID, COMPACT_FARM_STR);
+		Registry.register(Registry.BLOCK, id, COMPACT_FARM);
+		Registry.register(Registry.ITEM, id, new BlockItem(COMPACT_FARM, getTimeItemSettings()));
+		COMPACT_FARM_ENTITY = Registry.register(Registry.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.create(CompactFarmBlockEntity::new, COMPACT_FARM).build(null));
+		COMPACT_FARM_SCREEN_HANDLER = ScreenHandlerRegistry.registerSimple(id, CompactFarmScreenHandler::new);
 
 		ServerTickEvents.END_WORLD_TICK.register(this);
 
