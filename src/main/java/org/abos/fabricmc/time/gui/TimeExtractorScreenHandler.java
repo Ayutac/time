@@ -55,7 +55,6 @@ public class TimeExtractorScreenHandler extends ScreenHandler {
             addProperties(this.propertyDelegate);
         else
             Time.LOGGER.warn("Property delegate for {} missing, this shouldn't happen. Animations will not occur.",TimeExtractorScreenHandler.class.getName());
-        // This will place the slot in the correct locations for a 3x3 Grid. The slots exist on both server and client!
         // This will not render the background of the slots however, this is the Screens job
         int m;
         int l;
