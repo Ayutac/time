@@ -56,8 +56,10 @@ public class CompactFarmBlock extends BlockWithEntity {
             return ActionResult.SUCCESS;
         }
         BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity instanceof CompactFarmBlockEntity) {
-            player.openHandledScreen((CompactFarmBlockEntity)blockEntity);
+        if (blockEntity instanceof CompactFarmBlockEntity compactFarmBlockEntity) {
+            if (!Time.CONFIG.allowsCompactFarmEggs())
+                compactFarmBlockEntity.ejectEggSlot(player);
+            player.openHandledScreen(compactFarmBlockEntity);
         }
         return ActionResult.CONSUME;
     }

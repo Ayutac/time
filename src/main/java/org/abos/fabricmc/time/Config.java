@@ -11,6 +11,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Properties;
 
 /**
@@ -37,7 +38,7 @@ public final class Config {
      * 3. add the non-static variants
      * 4. if it's a rule, add rule initialization to constructor
      * 5. add sanitizing part in sanitize method; load method doesn't need to be touched
-     * 6. add language asset for the rule
+     * 6. if it's a rule, add language asset
      */
 
     //----------------------------------------------------------
@@ -109,6 +110,11 @@ public final class Config {
     // the default game rule default in case config couldn't be loaded
     public static final int COMPACT_FARM_TICKS_DEFAULT = 250; // an in-game quarter-hour at normal tick rate
 
+    // the name of the property
+    public static final String COMPACT_FARM_EGGS_STR = "compact_farm_eggs"; // if changed, also change language assets
+    // the default property default in case config couldn't be loaded
+    public static final boolean COMPACT_FARM_EGGS_DEFAULT = false; // spawn eggs are usually disabled
+
     //----------------------------------------------------------
     // Properties field and default Properties field
     //----------------------------------------------------------
@@ -131,6 +137,7 @@ public final class Config {
         DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_CATTLE_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_CATTLE_DEFAULT));
         DEFAULT_PROPERTIES.setProperty(PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR, Integer.toString(PERCENTAGE_SHARD_SPAWNER_DEFAULT));
         DEFAULT_PROPERTIES.setProperty(COMPACT_FARM_TICKS_DEFAULT_STR, Integer.toString(COMPACT_FARM_TICKS_DEFAULT));
+        DEFAULT_PROPERTIES.setProperty(COMPACT_FARM_EGGS_STR, Boolean.toString(COMPACT_FARM_EGGS_DEFAULT));
     }
 
     /**
@@ -218,6 +225,9 @@ public final class Config {
     // the game rule default
     public int getCompactFarmTicksDefault() {return Integer.parseInt(properties.getProperty(COMPACT_FARM_TICKS_DEFAULT_STR));}
 
+    // the property accessor
+    public boolean allowsCompactFarmEggs() {return Boolean.parseBoolean(properties.getProperty(COMPACT_FARM_EGGS_STR));}
+
     //----------------------------------------------------------
     // Constructor
     //----------------------------------------------------------
@@ -256,7 +266,7 @@ public final class Config {
      */
     // don't change #properties after sanitizing
     @Contract(value = "null -> fail", pure = true)
-    protected Properties sanitize(Properties properties) {
+    private Properties sanitize(Properties properties) {
         Utils.requireNonNull(properties, "properties");
         Properties sanitized = getDefaultProperties();
         String property = null;
@@ -332,7 +342,7 @@ public final class Config {
         catch (NumberFormatException ex) {
             Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property, PERCENTAGE_SHARD_SPAWNER_DEFAULT_STR,PERCENTAGE_SHARD_SPAWNER_DEFAULT);
         }
-        // sanitize compact farm ticks default
+        // sanitize Compact Farm ticks default
         try {
             property = properties.getProperty(COMPACT_FARM_TICKS_DEFAULT_STR);
             Integer.parseInt(property);
@@ -341,6 +351,14 @@ public final class Config {
         catch (NumberFormatException ex) {
             Time.LOGGER.warn(SUBSTITUTE_DEFAULT_MSG,property,COMPACT_FARM_TICKS_DEFAULT_STR,COMPACT_FARM_TICKS_DEFAULT);
         }
+        // warn in case of boolean Compact Farm egg property
+        property = properties.getProperty(COMPACT_FARM_EGGS_STR);
+        if (property == null || (!property.toLowerCase(Locale.ROOT).equals("true") && !property.toLowerCase(Locale.ROOT).equals("false"))) {
+            Time.LOGGER.warn("Value {} for {} will be interpreted as \"{}\".", property, COMPACT_FARM_EGGS_STR, COMPACT_FARM_EGGS_DEFAULT);
+            sanitized.setProperty(COMPACT_FARM_EGGS_STR, Boolean.toString(COMPACT_FARM_EGGS_DEFAULT));
+        }
+        else
+            sanitized.setProperty(COMPACT_FARM_EGGS_STR,property);
         // collect unused properties and log them
         Hashtable<?, ?> unused = new Hashtable<>(properties);
         for (Object key : sanitized.keySet())
@@ -357,7 +375,7 @@ public final class Config {
      * @return the (possibly defaulted) configuration properties, not {@code null}
      */
     @NotNull
-    protected Properties loadProperties() {
+    private Properties loadProperties() {
         Properties fileProperties = null;
         // load the properties from the file
         try {

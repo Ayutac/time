@@ -5,10 +5,12 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import org.abos.fabricmc.time.Config;
 import org.abos.fabricmc.time.Time;
 import org.abos.fabricmc.time.blocks.CompactFarmBlockEntity;
 import org.abos.fabricmc.time.blocks.TimeExtractorBlockEntity;
@@ -20,6 +22,23 @@ import org.abos.fabricmc.time.blocks.TimeExtractorBlockEntity;
  * and <a href="https://fabricmc.net/wiki/tutorial:propertydelegates">this tutorial</a>.
  */
 public class CompactFarmScreenHandler extends ScreenHandler {
+
+    protected class EggSlot extends Slot {
+
+        public EggSlot(Inventory inventory, int index, int x, int y) {
+            super(inventory, index, x, y);
+        }
+
+        @Override
+        public boolean canInsert(ItemStack stack) {
+            return stack != null && stack.isOf(Items.EGG);
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return Time.CONFIG.allowsCompactFarmEggs();
+        }
+    }
 
     private final Inventory inventory;
 
@@ -56,18 +75,17 @@ public class CompactFarmScreenHandler extends ScreenHandler {
         int l;
         // compact farm inventory
         this.addSlot(new ShardOnlySlot(inventory, 0, 80, 17)); // input slot
-        this.addSlot(new Slot(inventory, 1, 62, 35)); // egg slot
-        for (m = 0; m < 3; m++)
-            this.addSlot(new BoundShardOnlySlot(inventory, m + 2, m * 18 + 98, 35)); // bound shard slot
+        this.addSlot(new EggSlot(inventory, 1, 62, 35)); // egg slot
+        this.addSlot(new BoundShardOnlySlot(inventory, 2, 98, 35)); // bound shard slot
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(inventory, l + m * 9 + 5, l * 18 + 8, m * 18 + 55));
+                this.addSlot(new Slot(inventory, l + m * 9 + 3, l * 18 + 8, m * 18 + 55));
             }
         }
         // player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, l * 18 + 8,  m * 18 + 120));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 7, l * 18 + 8,  m * 18 + 120));
             }
         }
         // player hotbar

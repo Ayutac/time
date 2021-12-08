@@ -16,4 +16,9 @@ public class BoundShardOnlySlot extends ShardOnlySlot {
             return false;
         return !stack.isOf(Time.AMETHYME_SHARD);
     }
+
+    @Override
+    public int getMaxItemCount() {
+        return 3;
+    }
 }

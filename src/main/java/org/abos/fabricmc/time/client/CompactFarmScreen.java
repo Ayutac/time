@@ -30,13 +30,16 @@ public class CompactFarmScreen extends HandledScreen<ScreenHandler> {
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, new Identifier(Time.MOD_ID, "textures/gui/container/compact_farm.png"));
+        if (Time.CONFIG.allowsCompactFarmEggs())
+            RenderSystem.setShaderTexture(0, new Identifier(Time.MOD_ID, "textures/gui/container/compact_farm_egg.png"));
+        else
+            RenderSystem.setShaderTexture(0, new Identifier(Time.MOD_ID, "textures/gui/container/compact_farm.png"));
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
         if (((CompactFarmScreenHandler)this.handler).isExtracting()) {
             int height = ((CompactFarmScreenHandler)this.handler).getExtractionProgress();
-            this.drawTexture(matrices, x+62 + 1 * 18 + 1, y+17 + 1 * 18, 176, 0, 15, height + 1);
+            this.drawTexture(matrices, x + 81, y + 35, 176, 0, 15, height + 1);
         }
     }
 

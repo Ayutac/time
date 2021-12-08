@@ -21,6 +21,7 @@ import org.abos.fabricmc.time.components.Counter;
 import org.abos.fabricmc.time.components.CounterImpl;
 import org.abos.fabricmc.time.gui.CompactFarmScreenHandler;
 import org.abos.fabricmc.time.gui.TimeExtractorScreenHandler;
+import org.jetbrains.annotations.Nullable;
 
 public class CompactFarmBlockEntity extends LockableContainerBlockEntity implements DefaultedInventory {
 
@@ -28,7 +29,7 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
 
     public static final String TICK_COUNTER_NAME = "tickCounter";
 
-    public static final int INVENTORY_SIZE = 32; // 3x 9 rows + shard input + 3 shard battery + egg input
+    public static final int INVENTORY_SIZE = 30; // 3x 9 rows + shard input + bound shard + egg input
     public static final int PROPERTY_DELEGATE_SIZE = 1;
 
     private static int ticksNeeded;
@@ -103,6 +104,18 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
 
     public void resetTickCounter() {
         tickCounter.reset();
+    }
+
+    public boolean eggSlotUsed() {
+        ItemStack eggSlot = inventory.get(1);
+        return eggSlot != null && !eggSlot.isEmpty();
+    }
+
+    public void ejectEggSlot(@Nullable PlayerEntity player) {
+        if (player == null || !eggSlotUsed())
+            return;
+        player.getInventory().offerOrDrop(inventory.get(1));
+        inventory.set(1, ItemStack.EMPTY);
     }
 
     //----------------------------------------------------------
