@@ -59,17 +59,17 @@ public class TimeExtractorScreenHandler extends ScreenHandler {
         int m;
         int l;
         // extractor inventory
-        this.addSlot(new Slot(inventory, 0, 62 + 1 * 18, 17 + 0 * 18));
-        this.addSlot(new Slot(inventory, 1, 62 + 1 * 18, 17 + 2 * 18 + 2));
+        this.addSlot(new Slot(inventory, 0, 80, 17)); // input slot
+        this.addSlot(new OutputOnlySlot(inventory, 1, 80, 55)); // output slot
         // player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, l * 18 + 8, m * 18 + 84));
             }
         }
         // player hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
+            this.addSlot(new Slot(playerInventory, m, m * 18 + 8, 142));
         }
     }
 

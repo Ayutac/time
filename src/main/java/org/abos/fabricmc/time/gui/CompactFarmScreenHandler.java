@@ -55,25 +55,24 @@ public class CompactFarmScreenHandler extends ScreenHandler {
         int m;
         int l;
         // compact farm inventory
-        this.addSlot(new Slot(inventory, 0, 62 + 1 * 18, 17 + 0 * 18));
-        this.addSlot(new Slot(inventory, 1, 62 + 0 * 18, 17 + 1 * 18));
+        this.addSlot(new ShardOnlySlot(inventory, 0, 80, 17)); // input slot
+        this.addSlot(new Slot(inventory, 1, 62, 35)); // egg slot
         for (m = 0; m < 3; m++)
-            this.addSlot(new Slot(inventory, m + 2, 62 + (m+2) * 18, 17 + 1 * 18));
-        //this.addSlot(new Slot(inventory, 1, 62 + 1 * 18, 17 + 2 * 18 + 2));
+            this.addSlot(new BoundShardOnlySlot(inventory, m + 2, m * 18 + 98, 35)); // bound shard slot
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(inventory, l + m * 9 + 5, 8 + l * 18, 17 + 2 + (m+2) * 18));
+                this.addSlot(new Slot(inventory, l + m * 9 + 5, l * 18 + 8, m * 18 + 55));
             }
         }
         // player inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 84 + (m+2) * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, l * 18 + 8,  m * 18 + 120));
             }
         }
         // player hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142 + 2 * 18));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 178));
         }
     }
 
