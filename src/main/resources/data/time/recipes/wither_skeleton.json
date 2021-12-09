@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "time:amethyme_shards/skeleton"
+    },
+    {
+      "item": "time:amethyme_shards/skeleton"
+    },
+    {
+      "item": "time:amethyme_shards/skeleton"
+    },
+    {
+      "item": "minecraft:coal_block"
+    }
+  ],
+  "result": {
+    "item": "time:amethyme_shards/wither_skeleton",
+    "amount": 1
+  }
+}

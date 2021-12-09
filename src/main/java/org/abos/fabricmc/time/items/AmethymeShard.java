@@ -67,6 +67,7 @@ public class AmethymeShard extends Item {
     public static final AmethymeShard SPIDER = new AmethymeShard("compact_farm/spider");
     public static final AmethymeShard WHEAT = new AmethymeShard("compact_farm/wheat");
     public static final AmethymeShard WITCH = new AmethymeShard("compact_farm/witch");
+    public static final AmethymeShard WITHER_SKELETON = new AmethymeShard("compact_farm/wither_skeleton");
     public static final AmethymeShard ZOMBIE = new AmethymeShard("compact_farm/zombie");
     public static final AmethymeShard ZOMBIFIED_PIGLIN = new AmethymeShard("compact_farm/zombified_piglin");
 
@@ -95,6 +96,7 @@ public class AmethymeShard extends Item {
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/spider"), SPIDER);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/wheat"), WHEAT);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/witch"), WITCH);
+        Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/wither_skeleton"), WITHER_SKELETON);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/zombie"), ZOMBIE);
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/zombified_piglin"), ZOMBIFIED_PIGLIN);
     }
@@ -214,8 +216,10 @@ public class AmethymeShard extends Item {
             return GHAST;
         if (type == EntityType.MAGMA_CUBE)
             return MAGMA_SLIME;
+        if (type == EntityType.WITHER_SKELETON)
+            return WITHER_SKELETON;
         if (type == EntityType.ZOMBIFIED_PIGLIN)
-            return WITCH;
+            return ZOMBIFIED_PIGLIN;
         // friendly mobs
         if (type == EntityType.CHICKEN)
             return CHICKEN;
@@ -301,6 +305,8 @@ public class AmethymeShard extends Item {
                 return new ItemStack(Items.SPIDER_SPAWN_EGG);
             if (shard == WITCH)
                 return new ItemStack(Items.WITCH_SPAWN_EGG);
+            if (shard == WITHER_SKELETON)
+                return new ItemStack(Items.WITHER_SKELETON_SPAWN_EGG);
             if (shard == ZOMBIE)
                 return new ItemStack(Items.ZOMBIE_SPAWN_EGG);
             if (shard == ZOMBIFIED_PIGLIN)
