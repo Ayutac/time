@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.loot.LootTable;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +19,7 @@ import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 import org.abos.fabricmc.time.Time;
 import org.abos.fabricmc.time.Utils;
+import org.abos.fabricmc.time.gui.BoundShardOnlySlot;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,31 +41,31 @@ public class AmethymeShard extends Item {
      * 7. Add conversions via static shardFor methods.
      */
 
-    public static final AmethymeShard BEETROOT = new AmethymeShard();
-    public static final AmethymeShard BLAZE = new AmethymeShard();
-    public static final AmethymeShard CARROT = new AmethymeShard();
-    public static final AmethymeShard CAVE_SPIDER = new AmethymeShard();
-    public static final AmethymeShard CHICKEN = new AmethymeShard();
-    public static final AmethymeShard COW = new AmethymeShard();
-    public static final AmethymeShard CREEPER = new AmethymeShard();
-    public static final AmethymeShard ENDERMAN = new AmethymeShard();
-    public static final AmethymeShard GHAST = new AmethymeShard();
-    public static final AmethymeShard IRON_GOLEM = new AmethymeShard();
-    public static final AmethymeShard MAGMA_SLIME = new AmethymeShard();
-    public static final AmethymeShard MELON = new AmethymeShard();
-    public static final AmethymeShard OVERWORLD_HOSTILES = new AmethymeShard();
-    public static final AmethymeShard PIG = new AmethymeShard();
-    public static final AmethymeShard POTATO = new AmethymeShard();
-    public static final AmethymeShard PUMPKIN = new AmethymeShard();
-    public static final AmethymeShard SHEEP = new AmethymeShard();
-    public static final AmethymeShard SILVERFISH = new AmethymeShard();
-    public static final AmethymeShard SKELETON = new AmethymeShard();
-    public static final AmethymeShard SLIME = new AmethymeShard();
-    public static final AmethymeShard SPIDER = new AmethymeShard();
-    public static final AmethymeShard WHEAT = new AmethymeShard();
-    public static final AmethymeShard WITCH = new AmethymeShard();
-    public static final AmethymeShard ZOMBIE = new AmethymeShard();
-    public static final AmethymeShard ZOMBIFIED_PIGLIN = new AmethymeShard();
+    public static final AmethymeShard BEETROOT = new AmethymeShard("compact_farm/beetroot");
+    public static final AmethymeShard BLAZE = new AmethymeShard("compact_farm/blaze");
+    public static final AmethymeShard CARROT = new AmethymeShard("compact_farm/carrot");
+    public static final AmethymeShard CAVE_SPIDER = new AmethymeShard("compact_farm/cave_spider");
+    public static final AmethymeShard CHICKEN = new AmethymeShard("compact_farm/chicken");
+    public static final AmethymeShard COW = new AmethymeShard("compact_farm/cow");
+    public static final AmethymeShard CREEPER = new AmethymeShard("compact_farm/creeper");
+    public static final AmethymeShard ENDERMAN = new AmethymeShard("compact_farm/enderman");
+    public static final AmethymeShard GHAST = new AmethymeShard("compact_farm/ghast");
+    public static final AmethymeShard IRON_GOLEM = new AmethymeShard("compact_farm/iron_golem");
+    public static final AmethymeShard MAGMA_SLIME = new AmethymeShard("compact_farm/magma_slime");
+    public static final AmethymeShard MELON = new AmethymeShard("compact_farm/melon");
+    public static final AmethymeShard OVERWORLD_HOSTILES = new AmethymeShard("compact_farm/overworld_hostiles");
+    public static final AmethymeShard PIG = new AmethymeShard("compact_farm/pig");
+    public static final AmethymeShard POTATO = new AmethymeShard("compact_farm/potato");
+    public static final AmethymeShard PUMPKIN = new AmethymeShard("compact_farm/pumpkin");
+    public static final AmethymeShard SHEEP = new AmethymeShard("compact_farm/sheep");
+    public static final AmethymeShard SILVERFISH = new AmethymeShard("compact_farm/silverfish");
+    public static final AmethymeShard SKELETON = new AmethymeShard("compact_farm/skeleton");
+    public static final AmethymeShard SLIME = new AmethymeShard("compact_farm/slime");
+    public static final AmethymeShard SPIDER = new AmethymeShard("compact_farm/spider");
+    public static final AmethymeShard WHEAT = new AmethymeShard("compact_farm/wheat");
+    public static final AmethymeShard WITCH = new AmethymeShard("compact_farm/witch");
+    public static final AmethymeShard ZOMBIE = new AmethymeShard("compact_farm/zombie");
+    public static final AmethymeShard ZOMBIFIED_PIGLIN = new AmethymeShard("compact_farm/zombified_piglin");
 
     public static void register() {
         // if any name is changed, change the variable name too, as well as the corresponding assets
@@ -94,15 +96,52 @@ public class AmethymeShard extends Item {
         Registry.register(Registry.ITEM, new Identifier(Time.MOD_ID, ID+"s/zombified_piglin"), ZOMBIFIED_PIGLIN);
     }
 
+    public String lootPath;
+
+    /**
+     * Creates an amethyme shard item with the specified loot table path
+     * @param lootPath the relative path to the loot table
+     */
+    public AmethymeShard(@Nullable String lootPath) {
+        super(Time.getTimeItemSettings());
+        this.lootPath = lootPath;
+    }
+
     /**
      * Creates an amethyme shard item.
      */
     public AmethymeShard() {
-        super(Time.getTimeItemSettings());
+        this(null);
     }
 
     public boolean isUnbound() {
         return this == Time.AMETHYME_SHARD;
+    }
+
+    public String getLootPath() {
+        return lootPath;
+    }
+
+    public String getLevelledLootPath(int level) {
+        if (lootPath == null)
+            return Integer.toString(level);
+        return lootPath+level;
+    }
+
+    public boolean hasLootTable() {
+        return lootPath != null;
+    }
+
+    @Nullable
+    public LootTable getLootTable(@Nullable World world, int level) {
+        if (world == null || lootPath == null || level < 1 || level > BoundShardOnlySlot.MAX_AMOUNT)
+            return null;
+        return world.getServer().getLootManager().getTable(new Identifier(Time.MOD_ID,lootPath+level));
+    }
+
+    @Nullable
+    public LootTable getLootTable(@Nullable World world) {
+        return getLootTable(world, 1);
     }
 
     public static @Nullable ItemStack getUnboundStack(@NotNull PlayerEntity player) {

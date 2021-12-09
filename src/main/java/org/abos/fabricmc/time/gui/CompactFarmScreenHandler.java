@@ -23,6 +23,7 @@ import org.abos.fabricmc.time.blocks.TimeExtractorBlockEntity;
  */
 public class CompactFarmScreenHandler extends ScreenHandler {
 
+    // if changed, also change valid method of entities using this slot
     protected class EggSlot extends Slot {
 
         public EggSlot(Inventory inventory, int index, int x, int y) {

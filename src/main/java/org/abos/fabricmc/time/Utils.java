@@ -8,12 +8,27 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContext;
+import net.minecraft.loot.context.LootContextParameters;
+import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkSectionPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.StructureFeature;
 import org.abos.fabricmc.time.mixin.VillagerEntityEnvoker;
+import org.jetbrains.annotations.Contract;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public final class Utils {
 
@@ -63,6 +78,92 @@ public final class Utils {
         zombieVillagerEntity.setGossipData(villager.getGossip().serialize(NbtOps.INSTANCE).getValue());
         zombieVillagerEntity.setOfferData(villager.getOffers().toNbt());
         zombieVillagerEntity.setXp(villager.getExperience());
+    }
+
+    //----------------------------------------------------------
+    // loot methods
+    //----------------------------------------------------------
+
+    // TODO doc null returned if not found
+    @Contract("null,_,_->fail; _,null,_->fail")
+    public static ItemStack getFirstNonFullSlotOf(ItemStack item, Inventory inventory, boolean checkValid) {
+        requireNonNull(item,"item");
+        requireNonNull(inventory,"inventory");
+        ItemStack slot;
+        for (int index = 0; index < inventory.size(); index++) {
+            slot = inventory.getStack(index);
+            if (slot.isOf(item.getItem()) && slot.getCount() < slot.getMaxCount()  && (!checkValid || (inventory.isValid(index,item))))
+                return slot;
+        }
+        return null;
+    }
+
+    // TODO doc null returned if not found
+    @Contract("null,_->fail; _,null->fail")
+    public static ItemStack getFirstNonFullSlotOf(ItemStack item, Inventory inventory) {
+        return getFirstNonFullSlotOf(item, inventory, false);
+    }
+
+    // TODO doc -1 returned if not found
+    @Contract("null,_,_->fail")
+    public static int getFirstFreeSlotOf(Inventory inventory, ItemStack whatFor, boolean checkValid) {
+        requireNonNull(inventory,"inventory");
+        for (int index = 0; index < inventory.size(); index++) {
+            if (inventory.getStack(index).isEmpty() && (!checkValid || (whatFor != null && inventory.isValid(index,whatFor))))
+                return index;
+        }
+        return -1;
+    }
+
+    // TODO doc -1 returned if not found
+    @Contract("null->fail")
+    public static int getFirstFreeSlotOf(Inventory inventory) {
+        return getFirstFreeSlotOf(inventory, null, false);
+    }
+
+    @Contract("null,_,_->fail; _,null,_->fail; _,_,null->fail")
+    public static List<ItemStack> fillWithLoot(ServerWorld world, BlockPos pos, LootTable table) {
+        requireNonNull(world,"world");
+        requireNonNull(pos,"pos");
+        requireNonNull(table,"table");
+        LootContext context = new LootContext.Builder(world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).random(world.getRandom()).build(LootContextTypes.CHEST);
+        List<ItemStack> loot = table.generateLoot(context);
+        if (!(world.getBlockEntity(pos) instanceof Inventory inventory))
+            return loot;
+        List<ItemStack> lootRemainder = new LinkedList<>();
+        ItemStack lootEntry, inventorySlot;
+        int inventoryIndex, exchange;
+        while (!loot.isEmpty()) {
+            // skip empty entries
+            lootEntry = loot.get(0);
+            if (lootEntry == null || lootEntry.isEmpty()) {
+                loot.remove(0);
+                continue;
+            }
+            // find non-full stack
+            if ((inventorySlot = getFirstNonFullSlotOf(lootEntry,inventory,true)) != null) {
+                exchange = Math.min(inventorySlot.getMaxCount()-inventorySlot.getCount(), lootEntry.getCount());
+                inventorySlot.increment(exchange);
+                lootEntry.decrement(exchange);
+                if (lootEntry.isEmpty())
+                    loot.remove(0);
+                continue;
+            }
+            // find free stack
+            if ((inventoryIndex = getFirstFreeSlotOf(inventory, lootEntry, true)) != -1) {
+                inventorySlot = inventory.getStack(inventoryIndex);
+                exchange = Math.min(inventorySlot.getMaxCount(), lootEntry.getCount());
+                inventory.setStack(inventoryIndex, new ItemStack(lootEntry.getItem(), exchange));
+                lootEntry.decrement(exchange);
+                if (lootEntry.isEmpty())
+                    loot.remove(0);
+                continue;
+            }
+            // nothing free, return to remainder
+            lootRemainder.add(lootEntry);
+            loot.remove(0);
+        }
+        return lootRemainder;
     }
 
 }

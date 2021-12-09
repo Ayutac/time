@@ -11,6 +11,7 @@ public class ShardOnlySlot extends Slot {
         super(inventory, index, x, y);
     }
 
+    // if changed, also change valid method of entities using this slot
     @Override
     public boolean canInsert(ItemStack stack) {
         if (stack == null)

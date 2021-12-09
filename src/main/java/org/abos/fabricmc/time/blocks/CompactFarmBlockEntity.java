@@ -1,12 +1,14 @@
 package org.abos.fabricmc.time.blocks;
 
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.loot.LootTable;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -17,20 +19,26 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.abos.fabricmc.time.Time;
+import org.abos.fabricmc.time.Utils;
 import org.abos.fabricmc.time.components.Counter;
 import org.abos.fabricmc.time.components.CounterImpl;
+import org.abos.fabricmc.time.gui.BoundShardOnlySlot;
 import org.abos.fabricmc.time.gui.CompactFarmScreenHandler;
-import org.abos.fabricmc.time.gui.TimeExtractorScreenHandler;
+import org.abos.fabricmc.time.items.AmethymeShard;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class CompactFarmBlockEntity extends LockableContainerBlockEntity implements DefaultedInventory {
 
     public static final String CONTAINER_NAME = "container." + Time.COMPACT_FARM_STR;
 
-    public static final String TICK_COUNTER_NAME = "tickCounter";
+    public static final String TICK_COUNTER_KEY = "tickCounter";
+    public static final String CURRENT_SHARD_KEY = "levelCounter";
 
     public static final int INVENTORY_SIZE = 30; // 3x 9 rows + shard input + bound shard + egg input
-    public static final int PROPERTY_DELEGATE_SIZE = 1;
+    public static final int PROPERTY_DELEGATE_SIZE = 2;
 
     private static int ticksNeeded;
     /**
@@ -46,6 +54,8 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
 
     protected Counter tickCounter = new CounterImpl();
 
+    protected ItemStack currentShard = ItemStack.EMPTY;
+
     //----------------------------------------------------------
     // the property delegate field needed for the animation
     //----------------------------------------------------------
@@ -57,6 +67,9 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
             if (index == 0) {
                 return CompactFarmBlockEntity.this.tickCounter.getValue();
             }
+            if (index == 1) {
+                return CompactFarmBlockEntity.this.currentShard.getCount();
+            }
             return 0;
         }
 
@@ -64,6 +77,9 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
         public void set(int index, int value) {
             if (index == 0) {
                 CompactFarmBlockEntity.this.tickCounter.setValue(value);
+            }
+            if (index == 0) {
+                CompactFarmBlockEntity.this.currentShard.setCount(value);
             }
         }
 
@@ -85,15 +101,47 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
     // Tick method
     //----------------------------------------------------------
 
-    public static void tick(World world, BlockPos pos, BlockState state, CompactFarmBlockEntity syphon) {
+    public static void tick(World world, BlockPos pos, BlockState state, CompactFarmBlockEntity compactFarm) {
         if (world instanceof ServerWorld) {
-            syphon.tickCounter.increment();
-            ticksNeeded = world.getGameRules().getInt(Time.CONFIG.getCompactFarmTicksRule());
-            if (syphon.tickCounter.getValue() >= ticksNeeded) {
-                syphon.tickCounter.decrement(ticksNeeded);
-                // TODO action
+            if (compactFarm.isFarming()) {
+                // do one tick of extracting
+                compactFarm.getTickCounter().increment();
+                // farm once maybe
+                ticksNeeded = world.getGameRules().getInt(Time.CONFIG.getCompactFarmTicksRule());
+                if (compactFarm.getTickCounter().getValue() >= ticksNeeded) {
+                    compactFarm.resetTickCounter();
+                    ItemStack currentShard = compactFarm.getCurrentShard();
+                    if (!(currentShard.getItem() instanceof AmethymeShard)) {
+                        Time.LOGGER.warn("Used shard couldn't be determined, farm loot is lost!");
+                    }
+                    else {
+                        LootTable table = ((AmethymeShard)currentShard.getItem()).getLootTable(world, currentShard.getCount());
+                        if (table == null) {
+                            Time.LOGGER.warn("Loot table {} couldn't be found, farm loot is lost!",
+                                    ((AmethymeShard)currentShard.getItem()).getLevelledLootPath(currentShard.getCount()));
+                        }
+                        else {
+                            // fill farm
+                            List<ItemStack> remainder = Utils.fillWithLoot((ServerWorld) world, pos, table);
+                            CompactFarmBlockEntity.markDirty(world,pos,state);
+                            int size = 0;
+                            for (ItemStack slot : remainder)
+                                size += slot != null ? slot.getCount() : 0;
+                            if (size != 0)
+                                Time.LOGGER.warn("{} items couldn't be created due to full farm!", size);
+                        } // -> if loot table was accessible
+                    } // -> if shard was recognizable AmethymeShard
+                    compactFarm.setCurrentShard(ItemStack.EMPTY);
+                } // -> if ticks were full: it was time to farm
+            } // -> if farming was in progress
+
+            // start farming maybe
+            if (!compactFarm.isFarming() && !compactFarm.getFarmingShard().isEmpty() && compactFarm.getShardToBeUsedUp().isIn(Time.AMETHYME_SHARDS)) {
+                compactFarm.setCurrentShard(compactFarm.getFarmingShard());
+                compactFarm.getShardToBeUsedUp().decrement(1);
+                CompactFarmBlockEntity.markDirty(world,pos,state);
             }
-        }
+        } // -> if server world
     }
 
     //----------------------------------------------------------
@@ -102,13 +150,40 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
 
     // getter/setter methods are protected because the extraction process shouldn't be disturbed from the outside
 
+    protected Counter getTickCounter() {
+        return tickCounter;
+    }
+
     public void resetTickCounter() {
         tickCounter.reset();
     }
 
+    protected ItemStack getCurrentShard() {
+        return currentShard;
+    }
+
+    // TODO doc reference will not be saved
+    protected void setCurrentShard(@NotNull ItemStack currentShard) {
+        Utils.requireNonNull(currentShard,"currentShard");
+        if (currentShard.getCount() > BoundShardOnlySlot.MAX_AMOUNT)
+            Time.LOGGER.warn("Counts greater than {} will be reduced to {}.", BoundShardOnlySlot.MAX_AMOUNT, BoundShardOnlySlot.MAX_AMOUNT);
+        this.currentShard = new ItemStack(currentShard.getItem(), Math.min(currentShard.getCount(), BoundShardOnlySlot.MAX_AMOUNT));
+    }
+
+    public ItemStack getShardToBeUsedUp() {
+        if (inventory.get(0) == null)
+            throw new IllegalStateException("Slot for shards to be used can be empty, but not null!");
+        return inventory.get(0);
+    }
+
+    public ItemStack getEgg() {
+        if (inventory.get(1) == null)
+            throw new IllegalStateException("Egg slot can be empty, but not null!");
+        return inventory.get(1);
+    }
+
     public boolean eggSlotUsed() {
-        ItemStack eggSlot = inventory.get(1);
-        return eggSlot != null && !eggSlot.isEmpty();
+        return !getEgg().isEmpty();
     }
 
     public void ejectEggSlot(@Nullable PlayerEntity player) {
@@ -116,6 +191,16 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
             return;
         player.getInventory().offerOrDrop(inventory.get(1));
         inventory.set(1, ItemStack.EMPTY);
+    }
+
+    protected ItemStack getFarmingShard() {
+        if (inventory.get(2) == null)
+            throw new IllegalStateException("Farming shard slot can be empty, but not null!");
+        return inventory.get(2);
+    }
+
+    public boolean isFarming() {
+        return !(tickCounter.isZero() && currentShard.isEmpty());
     }
 
     //----------------------------------------------------------
@@ -141,7 +226,7 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
 
     @Override
     public boolean canPlayerUse(PlayerEntity player) {
-        if (this.world.getBlockEntity(this.pos) != this) {
+        if (world == null || world.getBlockEntity(this.pos) != this) {
             return false;
         }
         // reachable from 8 blocks afar (8*8=64)
@@ -153,6 +238,20 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
         inventory.clear();
     }
 
+    @Override
+    public boolean isValid(int slot, ItemStack stack) {
+        if (stack == null)
+            return false;
+        // if changed, also change the slot classes for the ScreenHandler
+        if (slot == 0)
+            return stack.isIn(Time.AMETHYME_SHARDS) || stack.isEmpty();
+        if (slot == 1) // emptying the egg slot is always allowed
+            return (stack.isOf(Items.EGG) && Time.CONFIG.allowsCompactFarmEggs()) || stack.isEmpty();
+        if (slot == 2)
+            return (stack.isIn(Time.AMETHYME_SHARDS) && !stack.isOf(Time.AMETHYME_SHARD)) || stack.isEmpty();
+        return 0 <= slot && slot < INVENTORY_SIZE;
+    }
+
     //----------------------------------------------------------
     // NBT I/O
     //----------------------------------------------------------
@@ -160,9 +259,12 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
     @Override
     public void readNbt(NbtCompound nbt) {
         super.readNbt(nbt);
+        // read inventory
         Inventories.readNbt(nbt, inventory);
+        // read current shard
+        currentShard = ItemStack.fromNbt(nbt.getCompound(CURRENT_SHARD_KEY));
         // read tick counter
-        int counter = nbt.getInt(TICK_COUNTER_NAME);
+        int counter = nbt.getInt(TICK_COUNTER_KEY);
         if (Counter.isCounterValue(counter))
             tickCounter.setValue(counter);
         else {
@@ -173,7 +275,11 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
 
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
-        nbt.putInt(TICK_COUNTER_NAME, tickCounter.getValue());
+        // write tick counter
+        nbt.putInt(TICK_COUNTER_KEY, tickCounter.getValue());
+        // write current shard
+        nbt.put(CURRENT_SHARD_KEY, currentShard.writeNbt(new NbtCompound()));
+        // write inventory
         Inventories.writeNbt(nbt, inventory);
         return super.writeNbt(nbt);
     }
