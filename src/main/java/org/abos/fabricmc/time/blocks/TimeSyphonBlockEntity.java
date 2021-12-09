@@ -19,7 +19,7 @@ import org.abos.fabricmc.time.components.TimeComponents;
 
 public class TimeSyphonBlockEntity extends BlockEntity implements DefaultedInventory {
 
-    public static final String TICK_COUNTER_NAME = "tickCounter";
+    public static final String TICK_COUNTER_KEY = "tickCounter";
 
     public static final String CTU_COUNTER_NAME = "ctu";
 
@@ -82,7 +82,7 @@ public class TimeSyphonBlockEntity extends BlockEntity implements DefaultedInven
         super.readNbt(nbt);
         Inventories.readNbt(nbt, items);
         // read tick counter
-        int counter = nbt.getInt(TICK_COUNTER_NAME);
+        int counter = nbt.getInt(TICK_COUNTER_KEY);
         if (Counter.isCounterValue(counter))
             tickCounter.setValue(counter);
         else {
@@ -102,7 +102,7 @@ public class TimeSyphonBlockEntity extends BlockEntity implements DefaultedInven
     @Override
     public NbtCompound writeNbt(NbtCompound nbt) {
         nbt.putInt(CTU_COUNTER_NAME, ctuCounter.getValue());
-        nbt.putInt(TICK_COUNTER_NAME, tickCounter.getValue());
+        nbt.putInt(TICK_COUNTER_KEY, tickCounter.getValue());
         Inventories.writeNbt(nbt, items);
         return super.writeNbt(nbt);
     }
