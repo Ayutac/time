@@ -126,7 +126,7 @@ public final class Utils {
         requireNonNull(world,"world");
         requireNonNull(pos,"pos");
         requireNonNull(table,"table");
-        LootContext context = new LootContext.Builder(world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).random(world.getRandom()).build(LootContextTypes.CHEST);
+        LootContext context = new LootContext.Builder(world).parameter(LootContextParameters.ORIGIN, Vec3d.ofCenter(pos)).random(world.getRandom()).build(LootContextTypes.COMMAND);
         List<ItemStack> loot = table.generateLoot(context);
         if (!(world.getBlockEntity(pos) instanceof Inventory inventory))
             return loot;
@@ -153,7 +153,8 @@ public final class Utils {
             if ((inventoryIndex = getFirstFreeSlotOf(inventory, lootEntry, true)) != -1) {
                 inventorySlot = inventory.getStack(inventoryIndex);
                 exchange = Math.min(inventorySlot.getMaxCount(), lootEntry.getCount());
-                inventory.setStack(inventoryIndex, new ItemStack(lootEntry.getItem(), exchange));
+                inventory.setStack(inventoryIndex, lootEntry.copy()); // without this damage and enchantments are lost
+                inventory.getStack(inventoryIndex).setCount(exchange);
                 lootEntry.decrement(exchange);
                 if (lootEntry.isEmpty())
                     loot.remove(0);
