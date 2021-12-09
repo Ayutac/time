@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.Items;
 import net.minecraft.loot.LootTable;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
@@ -23,6 +24,8 @@ import org.abos.fabricmc.time.gui.BoundShardOnlySlot;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Random;
 
 public class AmethymeShard extends Item {
 
@@ -134,7 +137,7 @@ public class AmethymeShard extends Item {
 
     @Nullable
     public LootTable getLootTable(@Nullable World world, int level) {
-        if (world == null || lootPath == null || level < 1 || level > BoundShardOnlySlot.MAX_AMOUNT)
+        if (world == null || world.getServer() == null || lootPath == null || level < 1 || level > BoundShardOnlySlot.MAX_AMOUNT)
             return null;
         return world.getServer().getLootManager().getTable(new Identifier(Time.MOD_ID,lootPath+level));
     }
@@ -254,5 +257,55 @@ public class AmethymeShard extends Item {
         if (spawnerEntity == null)
             return null;
         return shardForSpawner(spawnerEntity.getLogic().getRenderedEntity(spawnerEntity.getWorld()).getType());
+    }
+
+    public static ItemStack eggForShard(AmethymeShard shard, Random random) {
+        if (shard != null) {
+            if (random == null)
+                random = new Random();
+            if (shard == BLAZE)
+                return new ItemStack(Items.BLAZE_SPAWN_EGG);
+            if (shard == CAVE_SPIDER)
+                return new ItemStack(Items.CAVE_SPIDER_SPAWN_EGG);
+            if (shard == CHICKEN)
+                return new ItemStack(Items.CHICKEN_SPAWN_EGG);
+            if (shard == COW)
+                return new ItemStack(Items.COW_SPAWN_EGG);
+            if (shard == CREEPER)
+                return new ItemStack(Items.CREEPER_SPAWN_EGG);
+            if (shard == ENDERMAN)
+                return new ItemStack(Items.ENDERMAN_SPAWN_EGG);
+            if (shard == GHAST)
+                return new ItemStack(Items.GHAST_SPAWN_EGG);
+            // Items.IRON_GOLEM_SPAWN_EGG does not exist
+            if (shard == MAGMA_SLIME)
+                return new ItemStack(Items.MAGMA_CUBE_SPAWN_EGG);
+            if (shard == OVERWORLD_HOSTILES)
+                switch (random.nextInt(4)) {
+                    case 0: return new ItemStack(Items.CREEPER_SPAWN_EGG);
+                    case 1: return new ItemStack(Items.SPIDER_SPAWN_EGG);
+                    case 2: return new ItemStack(Items.SKELETON_SPAWN_EGG);
+                    case 3: return new ItemStack(Items.ZOMBIE_SPAWN_EGG);
+                }
+            if (shard == PIG)
+                return new ItemStack(Items.PIG_SPAWN_EGG);
+            if (shard == SHEEP)
+                return new ItemStack(Items.SHEEP_SPAWN_EGG);
+            if (shard == SILVERFISH)
+                return new ItemStack(Items.SILVERFISH_SPAWN_EGG);
+            if (shard == SKELETON)
+                return new ItemStack(Items.SKELETON_SPAWN_EGG);
+            if (shard == SLIME)
+                return new ItemStack(Items.SLIME_SPAWN_EGG);
+            if (shard == SPIDER)
+                return new ItemStack(Items.SPIDER_SPAWN_EGG);
+            if (shard == WITCH)
+                return new ItemStack(Items.WITCH_SPAWN_EGG);
+            if (shard == ZOMBIE)
+                return new ItemStack(Items.ZOMBIE_SPAWN_EGG);
+            if (shard == ZOMBIFIED_PIGLIN)
+                return new ItemStack(Items.ZOMBIFIED_PIGLIN_SPAWN_EGG);
+        }
+        return new ItemStack(Items.EGG);
     }
 }

@@ -121,6 +121,28 @@ public final class Utils {
         return getFirstFreeSlotOf(inventory, null, false);
     }
 
+    public static boolean addToInventory(ItemStack stack, Inventory inventory, boolean checkValid) {
+        ItemStack inventorySlot;
+        int inventoryIndex, exchange;
+        // find non-full stack
+        if ((inventorySlot = getFirstNonFullSlotOf(stack,inventory,checkValid)) != null) {
+            exchange = Math.min(inventorySlot.getMaxCount()-inventorySlot.getCount(), stack.getCount());
+            inventorySlot.increment(exchange);
+            stack.decrement(exchange);
+            return true;
+        }
+        // find free stack
+        if ((inventoryIndex = getFirstFreeSlotOf(inventory, stack, checkValid)) != -1) {
+            inventorySlot = inventory.getStack(inventoryIndex);
+            exchange = Math.min(inventorySlot.getMaxCount(), stack.getCount());
+            inventory.setStack(inventoryIndex, stack.copy()); // without this damage and enchantments are lost
+            inventory.getStack(inventoryIndex).setCount(exchange);
+            stack.decrement(exchange);
+            return true;
+        }
+        return false;
+    }
+
     @Contract("null,_,_->fail; _,null,_->fail; _,_,null->fail")
     public static List<ItemStack> fillWithLoot(ServerWorld world, BlockPos pos, LootTable table) {
         requireNonNull(world,"world");
@@ -131,8 +153,7 @@ public final class Utils {
         if (!(world.getBlockEntity(pos) instanceof Inventory inventory))
             return loot;
         List<ItemStack> lootRemainder = new LinkedList<>();
-        ItemStack lootEntry, inventorySlot;
-        int inventoryIndex, exchange;
+        ItemStack lootEntry;
         while (!loot.isEmpty()) {
             // skip empty entries
             lootEntry = loot.get(0);
@@ -140,27 +161,12 @@ public final class Utils {
                 loot.remove(0);
                 continue;
             }
-            // find non-full stack
-            if ((inventorySlot = getFirstNonFullSlotOf(lootEntry,inventory,true)) != null) {
-                exchange = Math.min(inventorySlot.getMaxCount()-inventorySlot.getCount(), lootEntry.getCount());
-                inventorySlot.increment(exchange);
-                lootEntry.decrement(exchange);
+            if (addToInventory(lootEntry, inventory, true)) {
                 if (lootEntry.isEmpty())
                     loot.remove(0);
                 continue;
             }
-            // find free stack
-            if ((inventoryIndex = getFirstFreeSlotOf(inventory, lootEntry, true)) != -1) {
-                inventorySlot = inventory.getStack(inventoryIndex);
-                exchange = Math.min(inventorySlot.getMaxCount(), lootEntry.getCount());
-                inventory.setStack(inventoryIndex, lootEntry.copy()); // without this damage and enchantments are lost
-                inventory.getStack(inventoryIndex).setCount(exchange);
-                lootEntry.decrement(exchange);
-                if (lootEntry.isEmpty())
-                    loot.remove(0);
-                continue;
-            }
-            // nothing free, return to remainder
+            // nothing changed, return to remainder
             lootRemainder.add(lootEntry);
             loot.remove(0);
         }

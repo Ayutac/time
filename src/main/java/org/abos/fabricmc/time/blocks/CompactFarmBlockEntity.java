@@ -5,7 +5,6 @@ import net.minecraft.block.entity.LockableContainerBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootTable;
@@ -36,6 +35,7 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
 
     public static final String TICK_COUNTER_KEY = "tickCounter";
     public static final String CURRENT_SHARD_KEY = "levelCounter";
+    public static final String CURRENTLY_EGG_KEY = "currentlyEgg";
 
     public static final int INVENTORY_SIZE = 30; // 3x 9 rows + shard input + bound shard + egg input
     public static final int PROPERTY_DELEGATE_SIZE = 2;
@@ -55,6 +55,8 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
     protected Counter tickCounter = new CounterImpl();
 
     protected ItemStack currentShard = ItemStack.EMPTY;
+
+    protected boolean currentlyEgg = false;
 
     //----------------------------------------------------------
     // the property delegate field needed for the animation
@@ -120,8 +122,15 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
                             Time.LOGGER.warn("Loot table {} couldn't be found, farm loot is lost!",
                                     ((AmethymeShard)currentShard.getItem()).getLevelledLootPath(currentShard.getCount()));
                         }
+                        else if (compactFarm.isCurrentlyEgg() && Time.CONFIG.allowsCompactFarmEggs()) {
+                            Utils.addToInventory(AmethymeShard.eggForShard((AmethymeShard)currentShard.getItem(),world.getRandom()),compactFarm,true);
+                            CompactFarmBlockEntity.markDirty(world,pos,state);
+                        }
                         else {
-                            // fill farm
+                            // fill farm normally
+                            if (compactFarm.isCurrentlyEgg() && !Time.CONFIG.allowsCompactFarmEggs()) {
+                                Time.LOGGER.warn("Egg production has been disabled, normal loot will be generated!");
+                            }
                             List<ItemStack> remainder = Utils.fillWithLoot((ServerWorld) world, pos, table);
                             CompactFarmBlockEntity.markDirty(world,pos,state);
                             int size = 0;
@@ -132,6 +141,7 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
                         } // -> if loot table was accessible
                     } // -> if shard was recognizable AmethymeShard
                     compactFarm.setCurrentShard(ItemStack.EMPTY);
+                    compactFarm.setCurrentlyEgg(false);
                 } // -> if ticks were full: it was time to farm
             } // -> if farming was in progress
 
@@ -139,6 +149,10 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
             if (!compactFarm.isFarming() && !compactFarm.getFarmingShard().isEmpty() && compactFarm.getShardToBeUsedUp().isIn(Time.AMETHYME_SHARDS)) {
                 compactFarm.setCurrentShard(compactFarm.getFarmingShard());
                 compactFarm.getShardToBeUsedUp().decrement(1);
+                if (compactFarm.getEgg().isOf(Items.EGG) && Time.CONFIG.allowsCompactFarmEggs()) {
+                    compactFarm.getEgg().decrement(1);
+                    compactFarm.setCurrentlyEgg(true);
+                }
                 CompactFarmBlockEntity.markDirty(world,pos,state);
             }
         } // -> if server world
@@ -168,6 +182,14 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
         if (currentShard.getCount() > BoundShardOnlySlot.MAX_AMOUNT)
             Time.LOGGER.warn("Counts greater than {} will be reduced to {}.", BoundShardOnlySlot.MAX_AMOUNT, BoundShardOnlySlot.MAX_AMOUNT);
         this.currentShard = new ItemStack(currentShard.getItem(), Math.min(currentShard.getCount(), BoundShardOnlySlot.MAX_AMOUNT));
+    }
+
+    public boolean isCurrentlyEgg() {
+        return currentlyEgg;
+    }
+
+    public void setCurrentlyEgg(boolean currentlyEgg) {
+        this.currentlyEgg = currentlyEgg;
     }
 
     public ItemStack getShardToBeUsedUp() {
@@ -261,6 +283,8 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
         super.readNbt(nbt);
         // read inventory
         Inventories.readNbt(nbt, inventory);
+        // read currently egg
+        currentlyEgg = nbt.getBoolean(CURRENTLY_EGG_KEY);
         // read current shard
         currentShard = ItemStack.fromNbt(nbt.getCompound(CURRENT_SHARD_KEY));
         // read tick counter
@@ -279,6 +303,8 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
         nbt.putInt(TICK_COUNTER_KEY, tickCounter.getValue());
         // write current shard
         nbt.put(CURRENT_SHARD_KEY, currentShard.writeNbt(new NbtCompound()));
+        // write currently egg
+        nbt.putBoolean(CURRENTLY_EGG_KEY, currentlyEgg);
         // write inventory
         Inventories.writeNbt(nbt, inventory);
         return super.writeNbt(nbt);
