@@ -1,3 +1,6 @@
 {
-  "parent": "time:block/time_collector"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "time:block/time_collector_top"
+  }
 }
