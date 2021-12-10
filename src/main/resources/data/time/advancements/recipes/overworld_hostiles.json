@@ -1,0 +1,73 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "time:amethyme_shards/overworld_hostiles"
+    ]
+  },
+  "criteria": {
+    "has_creeper": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:amethyme_shards/creeper"
+            ]
+          }
+        ]
+      }
+    },
+    "has_skeleton": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:amethyme_shards/skeleton"
+            ]
+          }
+        ]
+      }
+    },
+    "has_spider": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:amethyme_shards/spider"
+            ]
+          }
+        ]
+      }
+    },
+    "has_zombie": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:amethyme_shards/zombie"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "time:amethyme_shards/overworld_hostiles"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_creeper",
+      "has_spider",
+      "has_skeleton",
+      "has_zombie",
+      "has_the_recipe"
+    ]
+  ]
+}

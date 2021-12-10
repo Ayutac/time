@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "time:amethyme_shards/creeper"
+    },
+    {
+      "item": "time:amethyme_shards/skeleton"
+    },
+    {
+      "item": "time:amethyme_shards/spider"
+    },
+    {
+      "item": "time:amethyme_shards/zombie"
+    }
+  ],
+  "result": {
+    "item": "time:amethyme_shards/overworld_hostiles",
+    "amount": 4
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "time:amethyme_shards/wither_skeleton"
+    ]
+  },
+  "criteria": {
+    "has_bound_amethyme": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:amethyme_shards/skeleton"
+              ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "time:amethyme_shards/wither_skeleton"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_bound_amethyme",
+      "has_the_recipe"
+    ]
+  ]
+}
