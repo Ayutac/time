@@ -77,6 +77,26 @@
               "add": false
             }
           ],
+          "name": "minecraft:spider_eye"
+        }
+      ]
+    },
+    {
+      "rolls": 3.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:constant",
+                "value": 32.0
+              },
+              "add": false
+            }
+          ],
           "name": "minecraft:glass_bottle"
         }
       ]
@@ -98,26 +118,6 @@
             }
           ],
           "name": "minecraft:gunpowder"
-        }
-      ]
-    },
-    {
-      "rolls": 3.0,
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:constant",
-                "value": 32.0
-              },
-              "add": false
-            }
-          ],
-          "name": "minecraft:glowstone_dust"
         }
       ]
     },
