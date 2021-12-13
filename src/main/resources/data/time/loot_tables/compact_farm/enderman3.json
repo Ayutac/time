@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:command",
+  "pools": [
+    {
+      "rolls": 20.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:constant",
+                "value": 16.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:ender_pearl"
+        }
+      ]
+    },
+    {
+      "rolls": 6.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 32.0,
+                "max": 43.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:experience_bottle"
+        }
+      ]
+    }
+  ]
+}

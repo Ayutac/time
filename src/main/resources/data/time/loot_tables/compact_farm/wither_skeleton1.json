@@ -18,7 +18,7 @@
               "add": false
             }
           ],
-          "name": "minecraft:arrow"
+          "name": "minecraft:bone"
         }
       ]
     },
@@ -33,13 +33,13 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 56.0,
-                "max": 64.0
+                "min": 18.0,
+                "max": 24.0
               },
               "add": false
             }
           ],
-          "name": "minecraft:bone"
+          "name": "minecraft:coal"
         }
       ]
     },
@@ -87,76 +87,15 @@
                 "max": 1.0
               },
               "add": false
-            },
-            {
-              "function": "enchant_with_levels",
-              "treasure": true,
-              "levels": {
-                "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 10.0
-              }
             }
           ],
-          "name": "minecraft:bow",
-          "weight": 2
+          "name": "minecraft:stone_sword",
+          "weight": 4
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:constant",
-                "value": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:set_damage",
-              "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "enchant_with_levels",
-              "treasure": true,
-              "levels": {
-                "type": "minecraft:uniform",
-                "min": 5.0,
-                "max": 15.0
-              }
-            }
-          ],
-          "name": "minecraft:bow",
+          "name": "minecraft:wither_skeleton_skull",
           "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:constant",
-                "value": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:set_damage",
-              "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            }
-          ],
-          "name": "minecraft:bow",
-          "weight": 6
         }
       ]
     }
