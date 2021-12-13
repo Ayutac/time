@@ -12,12 +12,12 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:constant",
-                "constant": 64.0
+                "value": 64.0
               },
               "add": false
             }
           ],
-          "name": "minecraft:carrot"
+          "name": "minecraft:potato"
         }
       ]
     },
