@@ -1,0 +1,31 @@
+{
+  "replace": false,
+  "values": [
+    "time:amethyme_shards/beetroot",
+    "time:amethyme_shards/blaze",
+    "time:amethyme_shards/carrot",
+    "time:amethyme_shards/cave_spider",
+    "time:amethyme_shards/chicken",
+    "time:amethyme_shards/cow",
+    "time:amethyme_shards/creeper",
+    "time:amethyme_shards/enderman",
+    "time:amethyme_shards/ghast",
+    "time:amethyme_shards/iron_golem",
+    "time:amethyme_shards/magma_slime",
+    "time:amethyme_shards/melon",
+    "time:amethyme_shards/overworld_hostiles",
+    "time:amethyme_shards/pig",
+    "time:amethyme_shards/potato",
+    "time:amethyme_shards/pumpkin",
+    "time:amethyme_shards/sheep",
+    "time:amethyme_shards/silverfish",
+    "time:amethyme_shards/skeleton",
+    "time:amethyme_shards/slime",
+    "time:amethyme_shards/spider",
+    "time:amethyme_shards/wheat",
+    "time:amethyme_shards/witch",
+    "time:amethyme_shards/wither_skeleton",
+    "time:amethyme_shards/zombie",
+    "time:amethyme_shards/zombified_piglin"
+  ]
+}

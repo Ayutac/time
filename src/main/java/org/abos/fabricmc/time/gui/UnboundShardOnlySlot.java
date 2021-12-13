@@ -14,6 +14,8 @@ public class UnboundShardOnlySlot extends ShardOnlySlot  {
     // if changed, also change valid method of entities using this slot
     @Override
     public boolean canInsert(ItemStack stack) {
+        if (!super.canInsert(stack)) // ensures stack != null
+            return false;
         return stack.isOf(Time.AMETHYME_SHARD);
     }
 }

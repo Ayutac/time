@@ -48,6 +48,7 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 	public static final Tag<Item> SWORDS = TagFactory.ITEM.create(new Identifier("c", "swords"));
 	public static final Tag<Item> WANDS = TagFactory.ITEM.create(new Identifier("c", "wands"));
 	public static final Tag<Block> TARDIS_BLOCKS = TagFactory.BLOCK.create(new Identifier(MOD_ID, "tardis_blocks"));
+	public static final Tag<Item> BOUND_AMETHYME_SHARDS = TagFactory.ITEM.create(new Identifier(MOD_ID, "bound_"+AmethymeShard.ID+"s"));
 	public static final Tag<Item> AMETHYME_SHARDS = TagFactory.ITEM.create(new Identifier(MOD_ID, AmethymeShard.ID+"s"));
 
 	public static final ItemGroup TIME_GROUP = FabricItemGroupBuilder.build(

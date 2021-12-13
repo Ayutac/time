@@ -17,7 +17,7 @@ public class BoundShardOnlySlot extends ShardOnlySlot {
     public boolean canInsert(ItemStack stack) {
         if (!super.canInsert(stack)) // ensures stack != null
             return false;
-        return !stack.isOf(Time.AMETHYME_SHARD);
+        return stack.isIn(Time.BOUND_AMETHYME_SHARDS);
     }
 
     @Override
