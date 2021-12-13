@@ -11,7 +11,7 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "type": "minecraft:uniform",
+                "type": "minecraft:constant",
                 "constant": 64.0
               },
               "add": false

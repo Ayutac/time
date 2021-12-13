@@ -9,9 +9,9 @@
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:constant",
+              "function": "minecraft:set_count",
               "count": {
-                "type": "minecraft:uniform",
+                "type": "minecraft:constant",
                 "value": 64.0
               },
               "add": false
