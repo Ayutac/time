@@ -2,7 +2,7 @@
   "type": "minecraft:command",
   "pools": [
     {
-      "rolls": 2.0,
+      "rolls": 6.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -11,9 +11,8 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "type": "minecraft:uniform",
-                "min": 56.0,
-                "max": 64.0
+                "type": "minecraft:constant",
+                "value": 64.0
               },
               "add": false
             }
@@ -23,7 +22,7 @@
       ]
     },
     {
-      "rolls": 2.0,
+      "rolls": 6.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -32,9 +31,8 @@
             {
               "function": "minecraft:set_count",
               "count": {
-                "type": "minecraft:uniform",
-                "min": 56.0,
-                "max": 64.0
+                "type": "minecraft:constant",
+                "value": 64.0
               },
               "add": false
             }
@@ -44,7 +42,7 @@
       ]
     },
     {
-      "rolls": 2.0,
+      "rolls": 6.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -54,7 +52,7 @@
               "function": "minecraft:set_count",
               "count": {
                 "type": "minecraft:uniform",
-                "min": 40.0,
+                "min": 44.0,
                 "max": 45.0
               },
               "add": false
@@ -65,7 +63,7 @@
       ]
     },
     {
-      "rolls": 5.0,
+      "rolls": 9.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -83,7 +81,7 @@
               "function": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
+                "min": 0.8,
                 "max": 1.0
               },
               "add": false
@@ -93,41 +91,8 @@
               "treasure": true,
               "levels": {
                 "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 10.0
-              }
-            }
-          ],
-          "name": "minecraft:bow",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:constant",
-                "value": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:set_damage",
-              "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "enchant_with_levels",
-              "treasure": true,
-              "levels": {
-                "type": "minecraft:uniform",
-                "min": 5.0,
-                "max": 15.0
+                "min": 20.0,
+                "max": 30.0
               }
             }
           ],
@@ -149,14 +114,47 @@
               "function": "minecraft:set_damage",
               "damage": {
                 "type": "minecraft:uniform",
-                "min": 0.0,
+                "min": 0.9,
+                "max": 1.0
+              },
+              "add": false
+            },
+            {
+              "function": "enchant_with_levels",
+              "treasure": true,
+              "levels": {
+                "type": "minecraft:uniform",
+                "min": 25.0,
+                "max": 35.0
+              }
+            }
+          ],
+          "name": "minecraft:bow",
+          "weight": 1
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:constant",
+                "value": 1.0
+              },
+              "add": false
+            },
+            {
+              "function": "minecraft:set_damage",
+              "damage": {
+                "type": "minecraft:uniform",
+                "min": 0.85,
                 "max": 1.0
               },
               "add": false
             }
           ],
           "name": "minecraft:bow",
-          "weight": 6
+          "weight": 1
         }
       ]
     }

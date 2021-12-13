@@ -1,0 +1,67 @@
+{
+  "type": "minecraft:command",
+  "pools": [
+    {
+      "rolls": 6.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:constant",
+                "value": 64.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:string"
+        }
+      ]
+    },
+    {
+      "rolls": 6.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 22.0,
+                "max": 24.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:spider_eye"
+        }
+      ]
+    },
+    {
+      "rolls": 6.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 42.0,
+                "max": 43.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:experience_bottle"
+        }
+      ]
+    }
+  ]
+}

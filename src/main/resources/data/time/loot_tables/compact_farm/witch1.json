@@ -2,7 +2,133 @@
   "type": "minecraft:command",
   "pools": [
     {
-      "rolls": 2.0,
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 28.0,
+                "max": 32.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:glowstone_dust"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 28.0,
+                "max": 32.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:sugar"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 28.0,
+                "max": 32.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:redstone"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 28.0,
+                "max": 32.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:glass_bottle"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 28.0,
+                "max": 32.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:gunpowder"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 28.0,
+                "max": 32.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:glowstone_dust"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -18,145 +144,7 @@
               "add": false
             }
           ],
-          "name": "minecraft:arrow"
-        }
-      ]
-    },
-    {
-      "rolls": 2.0,
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 56.0,
-                "max": 64.0
-              },
-              "add": false
-            }
-          ],
-          "name": "minecraft:bone"
-        }
-      ]
-    },
-    {
-      "rolls": 2.0,
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 40.0,
-                "max": 45.0
-              },
-              "add": false
-            }
-          ],
-          "name": "minecraft:experience_bottle"
-        }
-      ]
-    },
-    {
-      "rolls": 5.0,
-      "bonus_rolls": 0.0,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:constant",
-                "value": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:set_damage",
-              "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "enchant_with_levels",
-              "treasure": true,
-              "levels": {
-                "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 10.0
-              }
-            }
-          ],
-          "name": "minecraft:bow",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:constant",
-                "value": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:set_damage",
-              "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "enchant_with_levels",
-              "treasure": true,
-              "levels": {
-                "type": "minecraft:uniform",
-                "min": 5.0,
-                "max": 15.0
-              }
-            }
-          ],
-          "name": "minecraft:bow",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:constant",
-                "value": 1.0
-              },
-              "add": false
-            },
-            {
-              "function": "minecraft:set_damage",
-              "damage": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 1.0
-              },
-              "add": false
-            }
-          ],
-          "name": "minecraft:bow",
-          "weight": 6
+          "name": "minecraft:stick"
         }
       ]
     }

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:command",
+  "pools": [
+    {
+      "rolls": 18.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:constant",
+                "value": 64.0
+              },
+              "add": false
+            }
+          ],
+          "name": "minecraft:melon"
+        }
+      ]
+    }
+  ]
+}
