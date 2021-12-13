@@ -146,7 +146,7 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
             } // -> if farming was in progress
 
             // start farming maybe
-            if (!compactFarm.isFarming() && !compactFarm.getFarmingShard().isEmpty() && compactFarm.getShardToBeUsedUp().isIn(Time.BOUND_AMETHYME_SHARDS)) {
+            if (!compactFarm.isFarming() && !compactFarm.getFarmingShard().isEmpty() && compactFarm.getShardToBeUsedUp().isOf(Time.AMETHYME_SHARD)) {
                 compactFarm.setCurrentShard(compactFarm.getFarmingShard());
                 compactFarm.getShardToBeUsedUp().decrement(1);
                 if (compactFarm.getEgg().isOf(Items.EGG) && Time.CONFIG.allowsCompactFarmEggs()) {
