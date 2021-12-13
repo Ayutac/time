@@ -266,7 +266,7 @@ public class CompactFarmBlockEntity extends LockableContainerBlockEntity impleme
             return false;
         // if changed, also change the slot classes for the ScreenHandler
         if (slot == 0)
-            return stack.isIn(Time.AMETHYME_SHARDS) || stack.isEmpty();
+            return stack.isOf(Time.AMETHYME_SHARD) || stack.isEmpty();
         if (slot == 1) // emptying the egg slot is always allowed
             return (stack.isOf(Items.EGG) && Time.CONFIG.allowsCompactFarmEggs()) || stack.isEmpty();
         if (slot == 2)

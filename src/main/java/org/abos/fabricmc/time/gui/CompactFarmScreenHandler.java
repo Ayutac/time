@@ -75,9 +75,10 @@ public class CompactFarmScreenHandler extends ScreenHandler {
         int m;
         int l;
         // compact farm inventory
-        this.addSlot(new ShardOnlySlot(inventory, 0, 80, 17)); // input slot
+        this.addSlot(new UnboundShardOnlySlot(inventory, 0, 80, 17)); // input slot
         this.addSlot(new EggSlot(inventory, 1, 62, 35)); // egg slot
         this.addSlot(new BoundShardOnlySlot(inventory, 2, 98, 35)); // bound shard slot
+        // loot inventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
                 this.addSlot(new Slot(inventory, l + m * 9 + 3, l * 18 + 8, m * 18 + 55));
