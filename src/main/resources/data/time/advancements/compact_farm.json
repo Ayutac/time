@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:compact_farm"
+    },
+    "title": {
+      "translate": "advancements.time.compact_farm"
+    },
+    "description": {
+      "translate": "advancements.time.compact_farm.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "time:bound_amethyme_shard",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "time:compact_farm"
+      }
+    }
+  }
+}

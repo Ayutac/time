@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:amethyme_shards/overworld_hostiles"
+    },
+    "title": {
+      "translate": "advancements.time.bound_amethyme_shard"
+    },
+    "description": {
+      "translate": "advancements.time.bound_amethyme_shard.desc"
+    }
+  },
+  "parent": "time:amethyme_shard",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "time:bound_amethyme_shards"
+          }
+        ]
+      }
+    }
+  }
+}

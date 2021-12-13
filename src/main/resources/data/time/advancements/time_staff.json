@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:time_staff"
+    },
+    "title": {
+      "translate": "advancements.time.time_staff"
+    },
+    "description": {
+      "translate": "advancements.time.time_staff.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "time:time_wand",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:time_staff"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

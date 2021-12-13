@@ -1,0 +1,23 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:time_extractor"
+    },
+    "title": {
+      "translate": "advancements.time.time_extractor"
+    },
+    "description": {
+      "translate": "advancements.time.time_extractor.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "time:amethyme_shard",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "block": "time:time_extractor"
+      }
+    }
+  }
+}

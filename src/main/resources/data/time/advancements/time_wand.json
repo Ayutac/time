@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "time:time_wand"
+    },
+    "title": {
+      "translate": "advancements.time.time_wand"
+    },
+    "description": {
+      "translate": "advancements.time.time_wand.desc"
+    },
+    "frame": "goal"
+  },
+  "parent": "time:timey_wand",
+  "criteria": {
+    "crit1": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "time:time_wand"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
