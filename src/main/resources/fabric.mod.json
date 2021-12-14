@@ -9,8 +9,8 @@
     "Ayutac"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/Ayutac/time",
+    "sources": "https://github.com/Ayutac/time"
   },
 
   "license": "MIT",
@@ -49,6 +49,6 @@
     "java": ">=17"
   },
   "suggests": {
-    "another-mod": "*"
+    "patchouli": ">=1.17.1-59-FABRIC"
   }
 }

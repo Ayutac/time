@@ -1,0 +1,16 @@
+{
+  "name": "Timey Wimey",
+  "icon": "time:timey_wimey",
+  "category": "time:general",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "For starters, you need something to interact with time. Luckily there are some common items that can already influence time."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "time:timey_wimey",
+      "text": "Recipe for Timey Wimey"
+    }
+  ]
+}

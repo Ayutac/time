@@ -1,0 +1,9 @@
+{
+  "name": "Wibbly Wobbly",
+  "landing_text": "Timey Wimey",
+  "book_texture": "patchouli:textures/gui/book_blue.png",
+  "custom_book_item": "time:book_of_time",
+  "model": "time:book_of_time",
+  "use_blocky_font": true,
+  "version": 1
+}
