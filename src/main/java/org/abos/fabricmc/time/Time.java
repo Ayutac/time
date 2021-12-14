@@ -38,6 +38,8 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 	// don't forget to look up use of this variable for even more changes...
 	public static final String MOD_ID = "time";
 
+	public static final String PATCHOULI_ID = "patchouli";
+
 	public static final String MOD_NAME = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getName();
 	public static final String MOD_VERSION = FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString();
 
@@ -56,6 +58,8 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 			() -> new ItemStack(Items.CLOCK));
 	public static Item.Settings getTimeItemSettings() {return new FabricItemSettings().group(Time.TIME_GROUP);}
 	public static AbstractBlock.Settings getTimeBlockSettings() {return FabricBlockSettings.of(Material.AMETHYST).strength(2.5f);}
+
+	public static final Item BOOK_OF_TIME = new BookOfTime();
 
 	public static final Item TIMEY_WIMEY = new Item(getTimeItemSettings());
 	public static final AmethymeShard AMETHYME_SHARD = new AmethymeShard();
@@ -87,6 +91,7 @@ public final class Time implements ModInitializer, ServerTickEvents.EndWorldTick
 	@Override
 	public void onInitialize() {
 		// if any name is changed, update the assets as well
+		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "book_of_time"), BOOK_OF_TIME);
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, "timey_wimey"), TIMEY_WIMEY);
 		Registry.register(Registry.ITEM, new Identifier(MOD_ID, AmethymeShard.ID), AMETHYME_SHARD);
 		AmethymeShard.register(); // registers all amethyme shards except for the (empty) amethyme shard, which comes first

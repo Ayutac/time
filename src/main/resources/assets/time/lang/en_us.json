@@ -13,6 +13,8 @@
   "advancements.time.root.desc": "Time isn't linear",
   "advancements.time.timey_wimey": "Timey Wimey",
   "advancements.time.timey_wimey.desc": "Worth the Diamond",
+  "advancements.time.book_of_time": "Once a Pun a Time",
+  "advancements.time.book_of_time.desc": "Learn secrets in time",
   "advancements.time.time_collector": "Clocking in",
   "advancements.time.time_collector.desc": "And now we wait",
   "advancements.time.amethyme_shard": "This saved some time!",
@@ -35,6 +37,9 @@
   "advancements.time.time_staff.desc": "What happens to coal over a long time I wonder?",
 
   "itemGroup.time.general": "Time mod",
+
+  "item.time.book_of_time": "Book of Time",
+  "time.patchouli.missing": "Please install Patchouli Mod to read this book.",
 
   "item.time.timey_wimey": "Timey Wimey",
   "item.time.time_sword": "Time Sword",
