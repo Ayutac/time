@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "TGT",
-    "ATA",
-    "NAN"
+    "TBT",
+    "A A",
+    "NTN"
   ],
   "key": {
     "A": {
       "item": "time:amethyme_shard"
     },
-    "G": {
-      "item": "minecraft:gold_ingot"
+    "B": {
+      "tag": "c:blue_dyes"
     },
     "N": {
       "item": "minecraft:netherite_ingot"

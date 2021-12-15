@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "ASA",
+    "BSB",
     "T T",
     "ASA"
   ],
   "key": {
     "A": {
       "item": "time:amethyme_shard"
+    },
+    "B": {
+      "tag": "c:blue_dyes"
     },
     "S": {
       "item": "minecraft:shulker_shell"

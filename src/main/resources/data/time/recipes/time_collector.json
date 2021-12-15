@@ -1,13 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "EDE",
-    "ATA",
-    "AAA"
+    " A ",
+    "BTB",
+    "EDE"
   ],
   "key": {
     "A": {
       "item": "minecraft:amethyst_shard"
+    },
+    "B": {
+      "tag": "c:blue_dyes"
     },
     "D": {
       "item": "minecraft:daylight_detector"
