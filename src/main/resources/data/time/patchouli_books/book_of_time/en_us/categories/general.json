@@ -1,6 +1,6 @@
 {
   "name": "General",
-  "description": "Information about the Wibbly Wobbly Time Mod.",
+  "description": "This category covers the basics needed to make some use of your $(thing)Time$().",
   "icon": "minecraft:clock",
   "sortnum": -100
 }

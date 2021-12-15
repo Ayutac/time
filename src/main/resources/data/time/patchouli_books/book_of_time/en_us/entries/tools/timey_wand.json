@@ -1,0 +1,17 @@
+{
+  "name": "Timey Wand",
+  "icon": "time:timey_wand",
+  "category": "time:tools",
+  "advancement": "time:amethyme_shard",
+  "pages": [
+    {
+      "type": "patchouli:quest",
+      "text": "The simplest tool made out of $(l:general/amethyme_shard)Amethyme Shards$(/l). It accelerates the growth of anything it touches.$(p)But watch out, it can quickly run out of charges and break.",
+      "trigger": "time:timey_wand"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "time:timey_wand"
+    }
+  ]
+}

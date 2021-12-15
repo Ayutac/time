@@ -1,0 +1,18 @@
+{
+  "name": "Amethyme Shard",
+  "icon": "time:amethyme_shard",
+  "category": "time:general",
+  "advancement": "time:time_collector",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "time:amethyme_shard",
+      "text": "Every once in a while the $(l:general/time_collector)Time Collector$(/l) has store enough $(thing)Time Essence$() so you can extract some with an $(item)Amethyst Shard$().$(br)The amount that can be stored in one is constant and will be referred to as a $(thing)Time Unit$() ($(thing)TU$())."
+    },
+    {
+      "type": "patchouli:quest",
+      "text": "Try using an $(item)Amethyst Shard$() on your placed $(l:general/time_collector)Time Collector$(/l). If nothing happens, wait until next morning and try again.",
+      "trigger": "time:amethyme_shard"
+    }
+  ]
+}

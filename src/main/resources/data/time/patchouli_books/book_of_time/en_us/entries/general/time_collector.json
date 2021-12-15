@@ -1,0 +1,18 @@
+{
+  "name": "Time Collector",
+  "icon": "time:time_collector",
+  "category": "time:general",
+  "advancement": "time:timey_wimey",
+  "pages": [
+    {
+      "type": "patchouli:quest",
+      "text": "A $(l:general/timey_wimey)Timey Wimey$(/l) allows you to craft a $(item)Time Collector$() that you can put anywhere in your world.",
+      "trigger": "time:time_collector"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "time:time_collector",
+      "text": "Since $(thing)Time$() passes everywhere at once, there is no need to place more than one $(item)Time Collector$()."
+    }
+  ]
+}

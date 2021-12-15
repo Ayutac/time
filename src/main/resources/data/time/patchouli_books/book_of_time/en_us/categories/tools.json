@@ -1,0 +1,6 @@
+{
+  "name": "Tools",
+  "description": "This category covers the tools you can craft with $(l:general/amethyme_shard)Amethyme Shards$(/l).",
+  "icon": "time:timey_wand",
+  "sortnum": 0
+}

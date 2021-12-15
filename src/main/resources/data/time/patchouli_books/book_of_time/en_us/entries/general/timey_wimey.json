@@ -4,13 +4,14 @@
   "category": "time:general",
   "pages": [
     {
-      "type": "patchouli:text",
-      "text": "For starters, you need something to interact with time. Luckily there are some common items that can already influence time."
+      "type": "patchouli:quest",
+      "text": "For starters, you need something to interact with time. Luckily there are some common items that can already do exactly that.$(p)$(item)Redstone$() ticks, $(item)Amethysts$() grow, the $(item)Clock$() checks and $(item)Bone Meal$() accelerates.",
+      "trigger": "time:timey_wimey"
     },
     {
       "type": "patchouli:crafting",
       "recipe": "time:timey_wimey",
-      "text": "Recipe for Timey Wimey"
+      "text": "The $(item)Diamond$() is needed to bind these different concepts together to a $(item)Timey Wimey$()."
     }
   ]
 }
